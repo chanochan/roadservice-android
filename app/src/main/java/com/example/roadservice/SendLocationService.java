@@ -10,7 +10,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
+
+import com.example.roadservice.backend.RoadServiceApi;
+import com.example.roadservice.backend.UpdateLocationRequest;
 
 import java.lang.ref.WeakReference;
 
@@ -19,11 +21,13 @@ public class SendLocationService extends Service {
     private Thread senderThread;
     private boolean isRunning;
     private Handler handler;
+    private RoadServiceApi api;
 
     @Override
     public void onCreate() {
         handler = new ShowToastHandler(getMainLooper(), this);
         isRunning = false;
+        api = new RoadServiceApi();
         senderThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -35,7 +39,14 @@ public class SendLocationService extends Service {
                     handler.sendMessage(msg);
 
                     try {
-                        Thread.sleep(3 * 1000);
+                        api.updateLocation(new UpdateLocationRequest(10, 20));
+                    } catch (Exception e) {
+                        Log.w(TAG, "Failed to update location.");
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        Thread.sleep(10 * 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
