@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.example.roadservice.backend.RoadServiceApi;
 import com.example.roadservice.backend.UpdateLocationRequest;
+import com.example.roadservice.backend.UpdateLocationResponse;
 
 import java.lang.ref.WeakReference;
 
@@ -34,14 +35,15 @@ public class SendLocationService extends Service {
                 int x = 0;
                 while (true) {
                     Log.i(TAG, "Running sender thread :D");
-                    Message msg = new Message();
-                    msg.obj = "Thread running";
-                    handler.sendMessage(msg);
-
                     try {
-                        api.updateLocation(new UpdateLocationRequest(10, 20));
+                        UpdateLocationResponse resp = api.updateLocation(new UpdateLocationRequest(10, 20));
+                        Message msg = new Message();
+                        msg.obj = String.format("Response: %s", resp.getStatus());
+                        handler.sendMessage(msg);
                     } catch (Exception e) {
-                        Log.w(TAG, "Failed to update location.");
+                        Message msg = new Message();
+                        msg.obj = "Failed to update location";
+                        handler.sendMessage(msg);
                         e.printStackTrace();
                     }
 

@@ -14,7 +14,7 @@ public class RetrofitInstance {
             .retryOnConnectionFailure(false)
             .build();
 
-    private static final String BASE_URL = "http://kharkhar.tk:8989";
+    private static final String BASE_URL = "http://192.168.122.1:8989";
     private static Retrofit api;
 
     public static Retrofit getApi() {
