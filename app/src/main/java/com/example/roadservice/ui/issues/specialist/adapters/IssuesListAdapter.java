@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roadservice.R;
-import com.example.roadservice.data.model.Issue;
+import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.issues.specialist.IssuesListActivity;
 
 import java.lang.ref.WeakReference;
@@ -46,14 +46,14 @@ public class IssuesListAdapter extends RecyclerView.Adapter<IssuesListAdapter.Vi
         private final TextView titleText;
         private final IssuesListAdapter IssuesListAdapter;
 
-        public ViewHolder(View view, List<Issue> localDataSet, IssuesListAdapter IssuesListAdapter) {
+        public ViewHolder(View view, List<Issue> localDataSet, IssuesListAdapter issuesListAdapter) {
             super(view);
-            this.IssuesListAdapter = IssuesListAdapter;
+            this.IssuesListAdapter = issuesListAdapter;
             titleText = (TextView) view.findViewById(R.id.issueTitle);
             titleText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    IssuesListAdapter.target.get().showIssueDetails(getLayoutPosition());
+                    issuesListAdapter.target.get().showIssueDetails(getLayoutPosition());
                 }
             });
         }

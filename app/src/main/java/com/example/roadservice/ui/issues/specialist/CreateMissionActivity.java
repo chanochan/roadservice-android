@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roadservice.R;
-import com.example.roadservice.data.model.SampleData;
+import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.issues.specialist.adapters.ItemsCounterAdapter;
 import com.example.roadservice.ui.issues.specialist.structs.ItemCounter;
 

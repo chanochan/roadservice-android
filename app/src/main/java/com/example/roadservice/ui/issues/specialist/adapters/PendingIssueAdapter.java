@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roadservice.R;
-import com.example.roadservice.data.model.Issue;
+import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.issues.specialist.PendingIssuesActivity;
 
 import java.lang.ref.WeakReference;

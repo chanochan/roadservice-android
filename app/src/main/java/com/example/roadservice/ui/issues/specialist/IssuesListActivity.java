@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roadservice.R;
-import com.example.roadservice.data.model.Issue;
-import com.example.roadservice.data.model.SampleData;
+import com.example.roadservice.models.Issue;
+import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.issues.specialist.adapters.IssuesListAdapter;
 
 import java.util.ArrayList;

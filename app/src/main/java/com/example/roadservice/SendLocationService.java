@@ -12,8 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.example.roadservice.backend.RoadServiceApi;
-import com.example.roadservice.backend.UpdateLocationRequest;
-import com.example.roadservice.backend.UpdateLocationResponse;
+import com.example.roadservice.backend.io.team.UpdateLocationRequest;
+import com.example.roadservice.backend.io.team.UpdateLocationResponse;
 
 import java.lang.ref.WeakReference;
 

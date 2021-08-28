@@ -6,73 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".ui.accounts.LoginActivity">
 
-    <Button
-        android:id="@+id/loginBtn"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="@+id/passwordText"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordQuestion" />
-
-    <Button
-        android:id="@+id/gotoRegisterBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register"
-        app:layout_constraintStart_toStartOf="@+id/passwordText"
-        app:layout_constraintTop_toTopOf="@+id/loginBtn" />
-
-
-    <TextView
-        android:id="@+id/forgotPasswordQuestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/forgot_password"
-        app:layout_constraintEnd_toEndOf="@+id/passwordText"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
-
-    <TextView
-        android:id="@+id/phoneNumberHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:padding="5dp"
-        android:text="@string/phone_number"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/phoneText"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/phoneText"
-        android:layout_width="245dp"
-        android:layout_height="44dp"
-        android:ems="10"
-        android:inputType="phone"
+        android:layout_height="364dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNumberHeader" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/passwordHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="5dp"
-        android:text="@string/password"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/passwordText"
-        app:layout_constraintTop_toBottomOf="@+id/phoneText" />
+        <EditText
+            android:id="@+id/loginPasswordText"
+            android:layout_width="245dp"
+            android:layout_height="47dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="@+id/passwordHeader"
+            app:layout_constraintTop_toBottomOf="@+id/passwordHeader" />
 
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="245dp"
-        android:layout_height="47dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordHeader" />
+        <TextView
+            android:id="@+id/phoneNumberHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="@string/phone_number"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/login"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="@+id/forgotPasswordQuestion"
+            app:layout_constraintTop_toBottomOf="@+id/forgotPasswordQuestion" />
+
+        <EditText
+            android:id="@+id/loginPhoneText"
+            android:layout_width="245dp"
+            android:layout_height="44dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberHeader"
+            app:layout_constraintTop_toBottomOf="@+id/phoneNumberHeader" />
+
+        <TextView
+            android:id="@+id/forgotPasswordQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/forgot_password"
+            app:layout_constraintEnd_toEndOf="@+id/loginPasswordText"
+            app:layout_constraintTop_toBottomOf="@+id/loginPasswordText" />
+
+        <Button
+            android:id="@+id/gotoRegisterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="@+id/loginPhoneText"
+            app:layout_constraintTop_toTopOf="@+id/loginBtn" />
+
+        <TextView
+            android:id="@+id/passwordHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:text="@string/password"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="@+id/phoneNumberHeader"
+            app:layout_constraintTop_toBottomOf="@+id/loginPhoneText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

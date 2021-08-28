@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.roadservice.R;
-import com.example.roadservice.data.model.Issue;
-import com.example.roadservice.data.model.SampleData;
+import com.example.roadservice.models.Issue;
+import com.example.roadservice.models.SampleData;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -44,7 +44,7 @@ public class IssueDetailsActivity extends AppCompatActivity implements OnMapRead
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
-        setContentView(R.layout.activity_current_issue);
+        setContentView(R.layout.activity_issue_details);
 
         mapView = findViewById(R.id.myIssueMapView);
         mapView.onCreate(savedInstanceState);
