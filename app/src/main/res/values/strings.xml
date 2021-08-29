@@ -1,6 +1,6 @@
 <resources>
     <string name="mapbox_access_token">
-        pk.eyJ1IjoicmVuZXc1MjAwOCIsImEiOiJja253OXVlZWMwdW9oMm5wczZsa2Y1dHdiIn0.JFq0xZZo9PeQVYupemGBog
+        pk.eyJ1IjoiaGF3YXdvYjQyNCIsImEiOiJja3N4N2FqNmkwMDl5MnZwOTY0end1czd0In0.zzBK2qxj_-ecFMccpgHqgw
     </string>
     <string name="app_name">Road Service Mobile</string>
     <string name="phone_number">شماره موبایل</string>

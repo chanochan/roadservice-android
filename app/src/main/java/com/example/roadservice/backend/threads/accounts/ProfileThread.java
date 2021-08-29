@@ -16,9 +16,13 @@ public class ProfileThread extends BaseBackendThread {
     @Override
     protected ProfileResponse backendMethod() {
         try {
-            return new RoadServiceApi().profile((ProfileRequest) request);
+            ProfileResponse profile = new RoadServiceApi().profile((ProfileRequest) request);
+            if (profile == null)
+                Log.d("SHIT", "In ja nulle!!");
+            return profile;
         } catch (Exception e) {
             // TODO handle exception
+            e.printStackTrace();
             return null;
         }
     }

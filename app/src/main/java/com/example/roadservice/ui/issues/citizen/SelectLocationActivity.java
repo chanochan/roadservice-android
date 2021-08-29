@@ -77,7 +77,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-        SelectLocationActivity.this.mapboxMap = mapboxMap;
+        this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull final Style style) {
@@ -159,7 +159,6 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
     }
 
     private void initDroppedMarker(@NonNull Style loadedMapStyle) {
-// Add the marker image to map
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.blue_pin);
         assert drawable != null;
         Bitmap bitmap = Bitmap.createBitmap(

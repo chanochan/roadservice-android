@@ -7,44 +7,55 @@
     tools:context=".ui.issues.citizen.AddIssueFragment">
 
     <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="شهرستان:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         android:text="@string/location"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="@+id/titleText"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTextLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <Button
+        android:id="@+id/changeLocBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/change_location"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/locationView"
+        app:layout_constraintStart_toStartOf="@+id/issueImageView"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/locationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
         android:text="@string/not_chosen"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/changeLocBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/change_location"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/descriptionTextLayout"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
-
-    <Button
         android:id="@+id/addIssueBtn"
         android:layout_width="140dp"
         android:layout_height="61dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:text="@string/save_issue"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
-        app:layout_constraintTop_toBottomOf="@+id/locationView" />
+        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextLayout" />
 
     <EditText
         android:id="@+id/titleText"
@@ -57,23 +68,35 @@
         app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
+    <!--    <com.google.android.material.textfield.TextInputEditText-->
+    <!--        android:id="@+id/titleText"-->
+    <!--        android:layout_width="243dp"-->
+    <!--        android:layout_height="47dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        android:ems="10"-->
+    <!--        android:inputType="textPersonName"-->
+    <!--        android:hint="عنوان"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView10"-->
+    <!--        android:textSize="19sp" />-->
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descriptionTextLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="352dp"
+        android:layout_height="89dp"
         android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText">
+        app:layout_constraintTop_toBottomOf="@+id/locationView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:hint="توضیحات"
             android:textSize="19sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -97,5 +120,35 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/titleText"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="استان:"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <Spinner
+        android:id="@+id/provinceSpinner"
+        android:layout_width="248dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="48dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView12"
+        app:layout_constraintEnd_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView12"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/countySpinner"
+        android:layout_width="248dp"
+        android:layout_height="36dp"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="@+id/provinceSpinner"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

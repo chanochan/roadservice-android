@@ -1,8 +1,9 @@
 package com.example.roadservice.backend.threads.citizen;
 
 import android.os.Handler;
+import android.util.Log;
 
-import com.example.roadservice.backend.io.accounts.LoginResponse;
+import com.example.roadservice.backend.RoadServiceApi;
 import com.example.roadservice.backend.io.citizen.AddIssueRequest;
 import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
@@ -14,12 +15,21 @@ public class AddIssueThread extends BaseBackendThread {
 
     @Override
     protected AddIssueResponse backendMethod() {
-        return null;
+        try {
+            AddIssueResponse resp = new RoadServiceApi().addIssue((AddIssueRequest) request);
+            if (resp == null) {
+                Log.d("SHIT", "Empty response in add issue thread!!");
+            }
+            return resp;
+        } catch (Exception e) {
+            // TODO handle exception
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     protected int getResponseCode() {
-        // TODO
-        return LoginResponse.CODE;
+        return AddIssueResponse.CODE;
     }
 }

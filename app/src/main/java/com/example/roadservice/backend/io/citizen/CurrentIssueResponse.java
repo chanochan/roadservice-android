@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class CurrentIssueResponse {
     public static final int CODE = 200;
+
     @SerializedName("id")
     @Expose
     public int id;
@@ -33,11 +34,13 @@ public class CurrentIssueResponse {
 
     public Issue toIssue() {
         // TODO Image address
+        // TODO county code
         return new Issue(
                 new GeoLocation(latitude, longitude),
                 title,
                 description,
-                null
+                null,
+                0
         );
     }
 }

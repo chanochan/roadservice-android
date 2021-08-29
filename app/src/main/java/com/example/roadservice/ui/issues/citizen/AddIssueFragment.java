@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -24,12 +27,17 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.citizen.AddIssueRequest;
+import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.threads.citizen.AddIssueThread;
+import com.example.roadservice.models.County;
+import com.example.roadservice.models.Database;
 import com.example.roadservice.models.GeoLocation;
 import com.example.roadservice.models.Issue;
+import com.example.roadservice.models.Province;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +48,6 @@ import java.util.concurrent.TimeUnit;
  * create an instance of this fragment.
  */
 public class AddIssueFragment extends Fragment {
-    private static final int IMAGE_PICKER_REQUEST_CODE = 100;
     private Issue issue;
     private ImageView imageView;
     private TextView locationView;
@@ -72,6 +79,10 @@ public class AddIssueFragment extends Fragment {
                 }
             }
     );
+    private ArrayList<Province> provinces;
+    private ArrayList<County> counties;
+    private Spinner provinceSpinner, countySpinner;
+    private ArrayAdapter<String> provinceAdapter, countyAdapter;
     private AddIssueHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
 
@@ -86,7 +97,7 @@ public class AddIssueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        issue = new Issue(GeoLocation.ORIGIN, "", "", null);
+        issue = new Issue(GeoLocation.ORIGIN, "", "", null, 0);
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
@@ -121,7 +132,59 @@ public class AddIssueFragment extends Fragment {
         Button addIssueButton = view.findViewById(R.id.addIssueBtn);
         addIssueButton.setOnClickListener(v -> submit());
 
+        provinceSpinner = view.findViewById(R.id.provinceSpinner);
+        provinceAdapter = new ArrayAdapter<>(
+                getContext(),
+                R.layout.spinner_item_province
+        );
+        provinceSpinner.setAdapter(provinceAdapter);
+        provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateCounties(provinces.get(position).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        updateProvinces();
+
+        countySpinner = view.findViewById(R.id.countySpinner);
+        countyAdapter = new ArrayAdapter<>(
+                getContext(),
+                R.layout.spinner_item_province
+        );
+        countySpinner.setAdapter(countyAdapter);
+        countySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                issue.setCounty(counties.get(position).getId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        updateCounties(provinces.get(0).getId());
+
         return view;
+    }
+
+    private void updateProvinces() {
+        provinceAdapter.clear();
+        provinces = Database.getProvinces();
+        for (Province province :
+                provinces)
+            provinceAdapter.add(province.getName());
+    }
+
+    private void updateCounties(int id) {
+        countyAdapter.clear();
+        counties = Database.getProvinceCounties(id);
+        for (County county :
+                counties)
+            countyAdapter.add(county.getName());
     }
 
     private void collectData() {
@@ -156,6 +219,12 @@ public class AddIssueFragment extends Fragment {
             Glide.with(this).load(issue.getImageAddress()).into(imageView);
     }
 
+    private void onDone() {
+        CitizenDashboardActivity activity = (CitizenDashboardActivity) getActivity();
+        activity.finish();
+        startActivity(new Intent());
+    }
+
     private static class AddIssueHandler extends Handler {
         private final WeakReference<AddIssueFragment> target;
 
@@ -169,6 +238,12 @@ public class AddIssueFragment extends Fragment {
             AddIssueFragment target = this.target.get();
             if (target == null)
                 return;
+            if (msg.arg1 != AddIssueResponse.CODE)
+                return;
+            AddIssueResponse resp = (AddIssueResponse) msg.obj;
+            // TODO how to know if problem is really saved?
+            if (resp != null && resp.title != null)
+                target.onDone();
         }
     }
 }

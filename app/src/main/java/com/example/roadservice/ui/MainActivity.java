@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roadservice.R;
+import com.example.roadservice.backend.io.RegionsResponse;
 import com.example.roadservice.backend.io.accounts.ProfileRequest;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
+import com.example.roadservice.backend.threads.RegionsThread;
 import com.example.roadservice.backend.threads.accounts.ProfileThread;
 import com.example.roadservice.ui.accounts.LoginActivity;
 import com.example.roadservice.ui.accounts.RegisterActivity;
@@ -58,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         handler = new MainHandler(Looper.getMainLooper(), this);
 
         checkLoginStatus();
+        fetchData();
+    }
+
+    private void fetchData() {
+        RegionsThread thread = new RegionsThread(handler, null);
+        threadPoolExecutor.execute(thread);
     }
 
     private void startLogin() {
@@ -100,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             if (msg.arg1 == ProfileResponse.CODE) {
                 // TODO handle moderators login
                 ProfileResponse resp = (ProfileResponse) msg.obj;
+                Log.d("SHIT", resp.role);
                 if (resp == null)
                     return;
                 switch (resp.role) {
@@ -113,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
                         target.gotoDashboard(SpecialistDashboardActivity.class);
                         break;
                 }
+            } else if (msg.arg1 == RegionsResponse.CODE) {
+                RegionsResponse resp = (RegionsResponse) msg.obj;
             }
         }
     }

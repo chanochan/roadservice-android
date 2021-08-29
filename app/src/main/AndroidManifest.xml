@@ -26,19 +26,19 @@
         <activity android:name=".ui.issues.specialist.SpecialistDashboardActivity" />
 
         <activity android:name=".ui.issues.citizen.SelectLocationActivity" />
-        <activity android:name=".ui.issues.citizen.CitizenDashboardActivity" />
+        <activity android:name=".ui.issues.citizen.CitizenDashboardActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".ui.accounts.ChangePasswordActivity" />
         <activity android:name=".ui.accounts.RegisterActivity" />
         <activity android:name=".ui.accounts.ForgetPasswordActivity" />
         <activity android:name=".ui.accounts.LoginActivity" />
 
-        <activity android:name=".ui.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".ui.MainActivity" />
 
         <service
             android:name=".SendLocationService"

@@ -5,12 +5,14 @@ public class Issue {
     private String title;
     private String description;
     private String imageAddress;
+    private int county;
 
-    public Issue(GeoLocation location, String title, String description, String imageAddress) {
+    public Issue(GeoLocation location, String title, String description, String imageAddress, int county) {
         this.location = location;
         this.title = title;
         this.description = description;
         this.imageAddress = imageAddress;
+        this.county = county;
     }
 
     public GeoLocation getLocation() {
@@ -43,5 +45,13 @@ public class Issue {
 
     public void setImageAddress(String imageAddress) {
         this.imageAddress = imageAddress;
+    }
+
+    public int getCounty() {
+        return county;
+    }
+
+    public void setCounty(int county) {
+        this.county = county;
     }
 }

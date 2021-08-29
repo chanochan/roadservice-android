@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -84,14 +83,17 @@ public class CitizenDashboardActivity extends AppCompatActivity {
                 return;
             if (msg.arg1 == CurrentIssueResponse.CODE) {
                 CurrentIssueResponse resp = (CurrentIssueResponse) msg.obj;
-                Issue issue = resp.toIssue();
-                Log.d("SHIT", resp.state);
-                if (resp.state.equals("SC") || resp.state.equals("RJ"))
-                    target.gotoAddIssue();
-                else if (resp.state.equals("DO"))
-                    target.gotoRateIssue(issue);
-                else
-                    target.gotoCurrentIssue(issue);
+                target.gotoAddIssue();
+                if (resp == null)
+                    return;
+//                Issue issue = resp.toIssue();
+//                Log.d("SHIT", resp.state);
+//                if (resp.state.equals("SC") || resp.state.equals("RJ"))
+//                    target.gotoAddIssue();
+//                else if (resp.state.equals("DO"))
+//                    target.gotoRateIssue(issue);
+//                else
+//                    target.gotoCurrentIssue(issue);
             }
         }
     }

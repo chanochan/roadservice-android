@@ -8,25 +8,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
-import com.example.roadservice.backend.io.accounts.ProfileRequest;
-import com.example.roadservice.backend.io.accounts.ProfileResponse;
 import com.example.roadservice.backend.threads.accounts.LoginThread;
-import com.example.roadservice.backend.threads.accounts.ProfileThread;
 import com.example.roadservice.ui.MainActivity;
 import com.example.roadservice.ui.accounts.structs.LoginData;
-import com.example.roadservice.ui.issues.citizen.CitizenDashboardActivity;
-import com.example.roadservice.ui.issues.specialist.SpecialistDashboardActivity;
-import com.example.roadservice.ui.issues.team.TeamDashboardActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -42,30 +33,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button loginBtn = findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("HIIII");
-                login();
-            }
+        findViewById(R.id.loginBtn).setOnClickListener(v -> {
+            System.out.println("HIIII");
+            login();
         });
-
-        Button registerBtn = findViewById(R.id.gotoRegisterBtn);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startRegister();
-            }
-        });
-
-        TextView forgetPasswordText = findViewById(R.id.forgotPasswordQuestion);
-        forgetPasswordText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoForgetPassword();
-            }
-        });
+        findViewById(R.id.gotoRegisterBtn).setOnClickListener(v -> startRegister());
+        findViewById(R.id.forgotPasswordQuestion).setOnClickListener(v -> gotoForgetPassword());
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()

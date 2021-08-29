@@ -1,13 +1,18 @@
 package com.example.roadservice.backend;
 
+import com.example.roadservice.backend.io.RegionsResponse;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.io.accounts.ProfileRequest;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
 import com.example.roadservice.backend.io.accounts.RegisterRequest;
 import com.example.roadservice.backend.io.accounts.RegisterResponse;
+import com.example.roadservice.backend.io.citizen.AddIssueRequest;
+import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.io.citizen.CurrentIssueRequest;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
+import com.example.roadservice.backend.io.citizen.RateIssueRequest;
+import com.example.roadservice.backend.io.citizen.RateIssueResponse;
 import com.example.roadservice.backend.io.team.UpdateLocationRequest;
 import com.example.roadservice.backend.io.team.UpdateLocationResponse;
 
@@ -51,6 +56,24 @@ public class RoadServiceApi {
     public CurrentIssueResponse currentIssue(CurrentIssueRequest reqData) throws IOException {
         Call<CurrentIssueResponse> call = api.currentIssue();
         Response<CurrentIssueResponse> response = call.execute();
+        return response.body();
+    }
+
+    public AddIssueResponse addIssue(AddIssueRequest reqData) throws IOException {
+        Call<AddIssueResponse> call = api.addIssue(reqData);
+        Response<AddIssueResponse> response = call.execute();
+        return response.body();
+    }
+
+    public RateIssueResponse rateIssue(RateIssueRequest reqData) throws IOException {
+        Call<RateIssueResponse> call = api.rateIssue(reqData);
+        Response<RateIssueResponse> response = call.execute();
+        return response.body();
+    }
+
+    public RegionsResponse regions() throws IOException {
+        Call<RegionsResponse> call = api.regions();
+        Response<RegionsResponse> response = call.execute();
         return response.body();
     }
 }
