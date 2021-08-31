@@ -38,6 +38,7 @@ public class PendingIssueResponse {
 
     public Issue toIssue() {
         return new Issue(
+                id,
                 new GeoLocation(latitude, longitude),
                 title,
                 description,

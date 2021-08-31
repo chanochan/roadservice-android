@@ -36,6 +36,7 @@ public class CurrentIssueResponse {
         // TODO Image address
         // TODO county code
         return new Issue(
+                id,
                 new GeoLocation(latitude, longitude),
                 title,
                 description,

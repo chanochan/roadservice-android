@@ -9,6 +9,8 @@ public class Database {
     private static ArrayList<County> counties = null;
     private static List<Machine> machines = null;
     private static List<Skill> skills = null;
+
+    private static List<MissionType> missionTypes = null;
     private static Issue issue;
 
     public static ArrayList<Province> getProvinces() {
@@ -76,5 +78,34 @@ public class Database {
 
     public static void setSkills(List<Skill> skills) {
         Database.skills = skills;
+    }
+
+    public static List<MissionType> getMissionTypes() {
+        return missionTypes;
+    }
+
+    public static void setMissionTypes(List<MissionType> missionTypes) {
+        Database.missionTypes = missionTypes;
+    }
+
+    public static MissionType getMissionType(int id) {
+        for (MissionType type : getMissionTypes())
+            if (type.getId() == id)
+                return type;
+        return null;
+    }
+
+    public static Machine getMachine(int id) {
+        for (Machine machine : getMachines())
+            if (machine.id == id)
+                return machine;
+        return null;
+    }
+
+    public static Skill getSkill(int id) {
+        for (Skill skill : getSkills())
+            if (skill.id == id)
+                return skill;
+        return null;
     }
 }

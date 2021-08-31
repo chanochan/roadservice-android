@@ -18,6 +18,9 @@ import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
 import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
 import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
 import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
+import com.example.roadservice.backend.io.team.CurrentMissionResponse;
+import com.example.roadservice.backend.io.team.EndMissionRequest;
+import com.example.roadservice.backend.io.team.EndMissionResponse;
 import com.example.roadservice.backend.io.team.UpdateLocationRequest;
 import com.example.roadservice.backend.io.team.UpdateLocationResponse;
 
@@ -98,6 +101,18 @@ public class RoadServiceApi {
     public CreateMissionResponse createMission(CreateMissionRequest reqData) throws IOException {
         Call<CreateMissionResponse> call = api.createMission(reqData);
         Response<CreateMissionResponse> response = call.execute();
+        return response.body();
+    }
+
+    public CurrentMissionResponse currentMission() throws IOException {
+        Call<CurrentMissionResponse> call = api.currentMission();
+        Response<CurrentMissionResponse> response = call.execute();
+        return response.body();
+    }
+
+    public EndMissionResponse endMission(EndMissionRequest reqData) throws IOException {
+        Call<EndMissionResponse> call = api.endMission(reqData);
+        Response<EndMissionResponse> response = call.execute();
         return response.body();
     }
 }

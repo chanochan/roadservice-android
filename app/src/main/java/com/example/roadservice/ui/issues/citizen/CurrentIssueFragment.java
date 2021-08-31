@@ -37,6 +37,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback {
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
+    TextView descriptionTextView, titleTextView;
     private Issue issue;
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -63,29 +64,41 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_current_issue, container, false);
 
-        TextView titleTextView = view.findViewById(R.id.myIssueTitleText);
-        titleTextView.setText(issue.getTitle());
-
-        TextView descriptionTextView = view.findViewById(R.id.myIssueDescText);
-        descriptionTextView.setText(issue.getDescription());
+        titleTextView = view.findViewById(R.id.myIssueTitleText);
+        descriptionTextView = view.findViewById(R.id.myIssueDescText);
 
         mapView = view.findViewById(R.id.myIssueMapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
+        showData();
+
         return view;
+    }
+
+    public void setData(Issue issue) {
+        this.issue = issue;
+        showData();
+    }
+
+    private void showData() {
+        titleTextView.setText(issue.getTitle());
+        descriptionTextView.setText(issue.getDescription());
+        if (this.mapboxMap != null) {
+            CameraPosition position = new CameraPosition.Builder()
+                    .target(new LatLng(issue.getLocation().getLatitude(), issue.getLocation().getLongitude()))
+                    .zoom(13)
+                    .build();
+            mapboxMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(position), 3000);
+        }
     }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.MAPBOX_STREETS, this::initDroppedMarker);
-        CameraPosition position = new CameraPosition.Builder()
-                .target(new LatLng(issue.getLocation().getLatitude(), issue.getLocation().getLongitude()))
-                .zoom(13)
-                .build();
-        mapboxMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(position), 3000);
+        showData();
     }
 
     private void initDroppedMarker(@NonNull Style loadedMapStyle) {

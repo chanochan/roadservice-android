@@ -16,6 +16,9 @@ import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
 import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
 import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
 import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
+import com.example.roadservice.backend.io.team.CurrentMissionResponse;
+import com.example.roadservice.backend.io.team.EndMissionRequest;
+import com.example.roadservice.backend.io.team.EndMissionResponse;
 import com.example.roadservice.backend.io.team.UpdateLocationRequest;
 import com.example.roadservice.backend.io.team.UpdateLocationResponse;
 
@@ -60,4 +63,10 @@ public interface RoadServiceApiInterface {
 
     @POST("/api/expert/accept-issue/")
     Call<CreateMissionResponse> createMission(@Body CreateMissionRequest data);
+
+    @GET("/api/serviceman/mission/")
+    Call<CurrentMissionResponse> currentMission();
+
+    @POST("/api/serviceman/finish-mission/")
+    Call<EndMissionResponse> endMission(@Body EndMissionRequest data);
 }

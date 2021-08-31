@@ -1,8 +1,10 @@
 package com.example.roadservice.backend.threads.team;
 
 import android.os.Handler;
+import android.util.Log;
 
-import com.example.roadservice.backend.io.accounts.LoginResponse;
+import com.example.roadservice.backend.RoadServiceApi;
+import com.example.roadservice.backend.io.team.EndMissionRequest;
 import com.example.roadservice.backend.io.team.EndMissionResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
@@ -13,12 +15,20 @@ public class EndMissionThread extends BaseBackendThread {
 
     @Override
     protected EndMissionResponse backendMethod() {
-        return null;
+        try {
+            EndMissionResponse resp = new RoadServiceApi().endMission((EndMissionRequest) request);
+            if (resp == null)
+                Log.d("SHIT", "In ja nulle tu end mission!!");
+            return resp;
+        } catch (Exception e) {
+            // TODO handle exception
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     protected int getResponseCode() {
-        // TODO
-        return LoginResponse.CODE;
+        return EndMissionResponse.CODE;
     }
 }

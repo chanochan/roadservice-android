@@ -97,7 +97,7 @@ public class AddIssueFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        issue = new Issue(GeoLocation.ORIGIN, "", "", null, 0);
+        issue = new Issue(0, GeoLocation.ORIGIN, "", "", null, 0);
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()

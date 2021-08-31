@@ -32,8 +32,7 @@ public class EndMissionFragment extends Fragment {
     }
 
     public static EndMissionFragment newInstance() {
-        EndMissionFragment fragment = new EndMissionFragment();
-        return fragment;
+        return new EndMissionFragment();
     }
 
     @Override
@@ -66,7 +65,7 @@ public class EndMissionFragment extends Fragment {
     }
 
     private void onDone() {
-        // TODO refresh dashboard
+        ((TeamDashboardActivity) getActivity()).updateData();
     }
 
     private static class EndMissionHandler extends Handler {

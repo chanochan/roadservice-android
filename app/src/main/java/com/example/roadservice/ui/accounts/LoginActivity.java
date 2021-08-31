@@ -8,9 +8,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.EditText;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.LoginRequest;

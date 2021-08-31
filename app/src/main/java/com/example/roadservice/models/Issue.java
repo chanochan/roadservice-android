@@ -8,7 +8,8 @@ public class Issue {
     private String imageAddress;
     private int county;
 
-    public Issue(GeoLocation location, String title, String description, String imageAddress, int county) {
+    public Issue(int id, GeoLocation location, String title, String description, String imageAddress, int county) {
+        this.id = id;
         this.location = location;
         this.title = title;
         this.description = description;

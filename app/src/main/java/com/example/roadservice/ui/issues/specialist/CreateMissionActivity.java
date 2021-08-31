@@ -8,7 +8,6 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,12 +59,12 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         machinesRecycler = findViewById(R.id.machinesRecycler);
         tempLayoutManager = new LinearLayoutManager(this);
         machinesRecycler.setLayoutManager(tempLayoutManager);
-        machinesRecycler.setAdapter(new ItemsCounterAdapter(machinesData, this));
+        machinesRecycler.setAdapter(new ItemsCounterAdapter(machinesData));
 
         skillsRecycler = findViewById(R.id.teamsRecycler);
         tempLayoutManager = new LinearLayoutManager(this);
         skillsRecycler.setLayoutManager(tempLayoutManager);
-        skillsRecycler.setAdapter(new ItemsCounterAdapter(skillsData, this));
+        skillsRecycler.setAdapter(new ItemsCounterAdapter(skillsData));
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
