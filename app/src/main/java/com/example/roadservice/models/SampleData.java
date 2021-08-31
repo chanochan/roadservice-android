@@ -33,17 +33,17 @@ public class SampleData {
             ),
     };
 
-    public static final String[] MACHINES = {
-            "جرثقیل",
-            "تراکتور",
-            "بنز",
-            "برف‌روبی"
+    public static final Machine[] MACHINES = {
+            new Machine(1, "جرثقیل"),
+            new Machine(2, "تراکتور"),
+            new Machine(3, "بنز"),
+            new Machine(4, "برف‌روبی"),
     };
 
-    public static final String[] SKILLS = {
-            "برق‌کاری",
-            "جوش‌کاری",
-            "خدمات آسفالت",
-            "آتش‌نشانی"
+    public static final Skill[] SKILLS = {
+            new Skill(1, "برق‌کاری"),
+            new Skill(2, "جوش‌کاری"),
+            new Skill(3, "خدمات آسفالت"),
+            new Skill(4, "آتش‌نشانی")
     };
 }

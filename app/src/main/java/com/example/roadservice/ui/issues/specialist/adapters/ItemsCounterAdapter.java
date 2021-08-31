@@ -56,21 +56,15 @@ public class ItemsCounterAdapter extends RecyclerView.Adapter<ItemsCounterAdapte
             countText = view.findViewById(R.id.counterItemCount);
 
             Button increaseBtn = view.findViewById(R.id.increaseBtn);
-            increaseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    localDataSet.get(getLayoutPosition()).increase();
-                    itemsCounterAdapter.notifyItemChanged(getLayoutPosition());
-                }
+            increaseBtn.setOnClickListener(v -> {
+                localDataSet.get(getLayoutPosition()).increase();
+                itemsCounterAdapter.notifyItemChanged(getLayoutPosition());
             });
 
             Button decreaseBtn = view.findViewById(R.id.decreaseBtn);
-            decreaseBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    localDataSet.get(getLayoutPosition()).decrease();
-                    itemsCounterAdapter.notifyItemChanged(getLayoutPosition());
-                }
+            decreaseBtn.setOnClickListener(v -> {
+                localDataSet.get(getLayoutPosition()).decrease();
+                itemsCounterAdapter.notifyItemChanged(getLayoutPosition());
             });
         }
 
@@ -79,8 +73,17 @@ public class ItemsCounterAdapter extends RecyclerView.Adapter<ItemsCounterAdapte
         }
 
         public void updateFields(ItemCounter data) {
-            titleText.setText((String) data.getObj());
-            countText.setText(String.format(Locale.getDefault(), "%d", data.getCount()));
+            titleText.setText(data.getObj().toString());
+            countText.setText(toPersian(String.format(Locale.getDefault(), "%d", data.getCount())));
+        }
+
+        private String toPersian(String string) {
+            String pat = "۰۱۲۳۴۵۶۷۸۹";
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < string.length(); i++) {
+                result.append(pat.charAt(string.charAt(i) - '0'));
+            }
+            return result.toString();
         }
     }
 }

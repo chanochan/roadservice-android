@@ -6,63 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.issues.specialist.SpecialistDashboardActivity">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/WELCOME_MSG"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:text="@string/allowed_ops"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/gotoAddIssueBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:onClick="gotoIssues"
-        android:text="@string/issues_list"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-    <Button
-        android:id="@+id/gotoCurrentIssueBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:onClick="gotoPendings"
-        android:text="@string/review_issues"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/gotoAddIssueBtn"
-        app:layout_constraintTop_toBottomOf="@+id/gotoAddIssueBtn" />
-
-    <Button
-        android:id="@+id/gotoChangePasswordBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:onClick="gotoChangePassword"
-        android:text="@string/change_password"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/gotoCurrentIssueBtn"
-        app:layout_constraintTop_toBottomOf="@+id/gotoCurrentIssueBtn" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pendingIssuesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="260dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

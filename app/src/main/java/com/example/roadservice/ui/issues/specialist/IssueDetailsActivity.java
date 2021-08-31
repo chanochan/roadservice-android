@@ -1,158 +1,103 @@
 package com.example.roadservice.ui.issues.specialist;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
+import android.widget.Button;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.roadservice.R;
+import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
+import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
+import com.example.roadservice.backend.threads.specialist.RejectIssueThread;
+import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
-import com.example.roadservice.models.SampleData;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.Layer;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.example.roadservice.ui.RSAppCompatActivity;
+import com.example.roadservice.ui.issues.citizen.CurrentIssueFragment;
 
-import static com.mapbox.mapboxsdk.style.layers.Property.NONE;
-import static com.mapbox.mapboxsdk.style.layers.Property.VISIBLE;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
+import java.lang.ref.WeakReference;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class IssueDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
-    private MapView mapView;
-    private MapboxMap mapboxMap;
-    private Layer droppedMarkerLayer;
-    private Issue issue = SampleData.ISSUE;
+public class IssueDetailsActivity extends RSAppCompatActivity {
+    private Issue issue;
+    private IssueDetailsHandler handler;
+    private ThreadPoolExecutor threadPoolExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_issue_details);
 
-        mapView = findViewById(R.id.myIssueMapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+        issue = Database.getIssue();
+        Fragment fragment = CurrentIssueFragment.newInstance(issue);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.issueDetailsFragment, fragment)
+                .commit();
 
-        TextView titleTextView = findViewById(R.id.myIssueTitleText);
-        titleTextView.setText(issue.getTitle());
+        Button rejectButton = findViewById(R.id.rejectIssueBtn);
+        rejectButton.setOnClickListener(v -> rejectIssue());
 
-        TextView descriptionTextView = findViewById(R.id.myIssueDescText);
-        descriptionTextView.setText(issue.getDescription());
+        Button acceptButton = findViewById(R.id.acceptIssueBtn);
+        acceptButton.setOnClickListener(v -> acceptIssue());
+
+        threadPoolExecutor = new ThreadPoolExecutor(
+                0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
+        );
+        handler = new IssueDetailsHandler(Looper.getMainLooper(), this);
+
+        setTitle("جزییات مشکل");
+    }
+
+    private void rejectIssue() {
+        RejectIssueThread thread = new RejectIssueThread(handler, new RejectIssueRequest(issue.getId()));
+        threadPoolExecutor.execute(thread);
+    }
+
+    private void acceptIssue() {
+        Intent intent = new Intent(this, CreateMissionActivity.class);
+        startActivity(intent);
+    }
+
+    private void onDone() {
+        onBackPressed();
     }
 
     @Override
-    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-        IssueDetailsActivity.this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override
-            public void onStyleLoaded(@NonNull final Style style) {
-                initDroppedMarker(style);
-            }
-        });
-        CameraPosition position = new CameraPosition.Builder()
-                .target(new LatLng(issue.getLocation().getLatitude(), issue.getLocation().getLongitude()))
-                .zoom(13)
-                .build();
-        mapboxMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(position), 3000);
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, SpecialistDashboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
-    private void initDroppedMarker(@NonNull Style loadedMapStyle) {
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.blue_pin);
-        assert drawable != null;
-        Bitmap bitmap = Bitmap.createBitmap(
-                drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888
-        );
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        loadedMapStyle.addImage("dropped-icon-image", bitmap);
-        loadedMapStyle.addSource(new GeoJsonSource("dropped-marker-source-id"));
-        loadedMapStyle.addLayer(new SymbolLayer(DROPPED_MARKER_LAYER_ID,
-                "dropped-marker-source-id").withProperties(
-                iconImage("dropped-icon-image"),
-                visibility(NONE),
-                iconAllowOverlap(true),
-                iconIgnorePlacement(true)
-        ));
+    private static class IssueDetailsHandler extends Handler {
+        private final WeakReference<IssueDetailsActivity> target;
 
-        if (loadedMapStyle.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
-            GeoJsonSource source = loadedMapStyle.getSourceAs("dropped-marker-source-id");
-            if (source != null) {
-                source.setGeoJson(
-                        Point.fromLngLat(
-                                issue.getLocation().getLongitude(),
-                                issue.getLocation().getLatitude()
-                        )
-                );
-            }
-            droppedMarkerLayer = loadedMapStyle.getLayer(DROPPED_MARKER_LAYER_ID);
-            if (droppedMarkerLayer != null) {
-                droppedMarkerLayer.setProperties(visibility(VISIBLE));
+        IssueDetailsHandler(Looper looper, IssueDetailsActivity target) {
+            super(looper);
+            this.target = new WeakReference<>(target);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            IssueDetailsActivity target = this.target.get();
+            if (target == null)
+                return;
+            if (msg.arg1 == RejectIssueResponse.CODE) {
+                RejectIssueResponse resp = (RejectIssueResponse) msg.obj;
+                if (resp == null) {
+                    Log.d("SHIT", "Empty response");
+                    return;
+                }
+                target.onDone();
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    @SuppressWarnings({"MissingPermission"})
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        mapView.onStop();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
     }
 }

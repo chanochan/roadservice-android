@@ -17,14 +17,16 @@ import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.threads.accounts.LoginThread;
 import com.example.roadservice.ui.MainActivity;
+import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.accounts.structs.LoginData;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends RSAppCompatActivity {
     ThreadPoolExecutor threadPoolExecutor;
     private LoginHandler handler;
 
@@ -56,10 +58,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginData collectData() {
         LoginData data = new LoginData();
-        EditText tmp = findViewById(R.id.loginPhoneText);
-        data.phoneNumber = tmp.getText().toString();
+        TextInputLayout tmp = findViewById(R.id.loginPhoneText);
+        data.phoneNumber = tmp.getEditText().getText().toString();
         tmp = findViewById(R.id.loginPasswordText);
-        data.password = tmp.getText().toString();
+        data.password = tmp.getEditText().getText().toString();
+        Log.d("SHIT", data.phoneNumber + " " + data.password);
         return data;
     }
 

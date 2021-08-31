@@ -3,10 +3,12 @@ package com.example.roadservice.backend.io.specialist;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CreateMissionResponse {
-    public static int CODE = 302;
-
-    @SerializedName("status")
+public class RejectIssueRequest {
+    @SerializedName("issue")
     @Expose
-    public boolean status;
+    public int issue;
+
+    public RejectIssueRequest(int issue) {
+        this.issue = issue;
+    }
 }

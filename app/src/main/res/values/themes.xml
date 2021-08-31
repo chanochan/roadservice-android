@@ -15,8 +15,13 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/vazir</item>
     </style>
+
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlActivated">#FFC107</item>
         <item name="colorControlNormal">#B1B1B1</item>
+    </style>
+
+    <style name="Button.Danger" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">#F00</item>
     </style>
 </resources>

@@ -38,7 +38,7 @@ public class RetrofitInstance {
             })
             .build();
 
-    private static final String BASE_URL = "http://kharkhar.tk:8989/";
+    private static final String BASE_URL = "http://kharkhar.tk:8080/";
     private static Retrofit api;
 
     public static Retrofit getApi() {

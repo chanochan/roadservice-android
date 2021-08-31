@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,6 +16,7 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.RegisterRequest;
 import com.example.roadservice.backend.io.accounts.RegisterResponse;
 import com.example.roadservice.backend.threads.accounts.RegisterThread;
+import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.accounts.structs.RegisterData;
 
 import java.lang.ref.WeakReference;
@@ -22,8 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class RegisterActivity extends AppCompatActivity {
-
+public class RegisterActivity extends RSAppCompatActivity {
     private ThreadPoolExecutor threadPoolExecutor;
     private Handler handler;
 

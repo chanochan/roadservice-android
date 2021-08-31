@@ -185,6 +185,7 @@ public class AddIssueFragment extends Fragment {
         for (County county :
                 counties)
             countyAdapter.add(county.getName());
+        countySpinner.setSelection(0);
     }
 
     private void collectData() {

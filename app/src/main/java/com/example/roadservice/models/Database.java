@@ -1,10 +1,15 @@
 package com.example.roadservice.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Database {
     private static ArrayList<Province> provinces = null;
     private static ArrayList<County> counties = null;
+    private static List<Machine> machines = null;
+    private static List<Skill> skills = null;
+    private static Issue issue;
 
     public static ArrayList<Province> getProvinces() {
 //        return provinces;
@@ -44,5 +49,32 @@ public class Database {
             if (county.getProvinceId() == id)
                 result.add(county);
         return result;
+    }
+
+    public static Issue getIssue() {
+//        return issue;
+        return SampleData.ISSUE;
+    }
+
+    public static void setIssue(Issue issue) {
+        Database.issue = issue;
+    }
+
+    public static List<Machine> getMachines() {
+        return Arrays.asList(SampleData.MACHINES);
+//        return machines;
+    }
+
+    public static void setMachines(List<Machine> machines) {
+        Database.machines = machines;
+    }
+
+    public static List<Skill> getSkills() {
+//        return skills;
+        return Arrays.asList(SampleData.SKILLS);
+    }
+
+    public static void setSkills(List<Skill> skills) {
+        Database.skills = skills;
     }
 }

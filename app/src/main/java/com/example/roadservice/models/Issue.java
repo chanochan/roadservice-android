@@ -1,6 +1,7 @@
 package com.example.roadservice.models;
 
 public class Issue {
+    private int id;
     private GeoLocation location;
     private String title;
     private String description;
@@ -53,5 +54,13 @@ public class Issue {
 
     public void setCounty(int county) {
         this.county = county;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

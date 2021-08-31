@@ -14,7 +14,9 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.citizen.CurrentIssueRequest;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.threads.citizen.CurrentIssueThread;
+import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
+import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.accounts.ChangePasswordActivity;
 
 import java.lang.ref.WeakReference;
@@ -22,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class CitizenDashboardActivity extends AppCompatActivity {
+public class CitizenDashboardActivity extends RSAppCompatActivity {
     private CitizenDashboardHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
 
@@ -41,6 +43,7 @@ public class CitizenDashboardActivity extends AppCompatActivity {
     }
 
     public void gotoAddIssue() {
+        setTitle("ثبت مشکل جدید");
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.citizen_fragment, AddIssueFragment.class, null)
@@ -48,6 +51,7 @@ public class CitizenDashboardActivity extends AppCompatActivity {
     }
 
     public void gotoCurrentIssue(Issue issue) {
+        setTitle("مشکل در دست بررسی");
         Fragment fragment = CurrentIssueFragment.newInstance(issue);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -56,6 +60,7 @@ public class CitizenDashboardActivity extends AppCompatActivity {
     }
 
     public void gotoRateIssue(Issue issue) {
+        setTitle("ارزیابی عملکرد");
         Fragment fragment = RateIssueFragment.newInstance(issue);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -83,7 +88,7 @@ public class CitizenDashboardActivity extends AppCompatActivity {
                 return;
             if (msg.arg1 == CurrentIssueResponse.CODE) {
                 CurrentIssueResponse resp = (CurrentIssueResponse) msg.obj;
-                target.gotoAddIssue();
+                target.gotoCurrentIssue(Database.getIssue());
                 if (resp == null)
                     return;
 //                Issue issue = resp.toIssue();

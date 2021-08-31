@@ -4,21 +4,21 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.example.roadservice.backend.RoadServiceApi;
-import com.example.roadservice.backend.io.specialist.CreateMissionRequest;
-import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
+import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
+import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
-public class CreateMissionThread extends BaseBackendThread {
-    public CreateMissionThread(Handler handler, Object request) {
+public class RejectIssueThread extends BaseBackendThread {
+    public RejectIssueThread(Handler handler, Object request) {
         super(handler, request);
     }
 
     @Override
-    protected CreateMissionResponse backendMethod() {
+    protected RejectIssueResponse backendMethod() {
         try {
-            CreateMissionResponse resp = new RoadServiceApi().createMission((CreateMissionRequest) request);
+            RejectIssueResponse resp = new RoadServiceApi().rejectIssue((RejectIssueRequest) request);
             if (resp == null) {
-                Log.d("SHIT", "Empty response in create mission!!");
+                Log.d("SHIT", "Empty response in reject issue thread!!");
             }
             return resp;
         } catch (Exception e) {
@@ -30,6 +30,6 @@ public class CreateMissionThread extends BaseBackendThread {
 
     @Override
     protected int getResponseCode() {
-        return CreateMissionResponse.CODE;
+        return RejectIssueResponse.CODE;
     }
 }

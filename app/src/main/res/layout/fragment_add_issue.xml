@@ -11,9 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="شهرستان:"
+        android:text="شهرستان"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintStart_toStartOf="@+id/titleTextHolder"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
@@ -22,29 +22,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/location"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/titleTextHolder"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <Button
         android:id="@+id/changeLocBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="83dp"
+        android:layout_height="55dp"
         android:layout_marginTop="4dp"
         android:text="@string/change_location"
         android:textSize="18sp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         app:layout_constraintBottom_toBottomOf="@+id/locationView"
-        app:layout_constraintStart_toStartOf="@+id/issueImageView"
+        app:layout_constraintEnd_toEndOf="@+id/issueImageView"
         app:layout_constraintTop_toTopOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/locationView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:text="@string/not_chosen"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
@@ -54,22 +54,12 @@
         android:layout_marginTop="16dp"
         android:text="@string/save_issue"
         android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
+        app:layout_constraintStart_toStartOf="@+id/titleTextHolder"
         app:layout_constraintTop_toBottomOf="@+id/descriptionTextLayout" />
 
-    <EditText
-        android:id="@+id/titleText"
-        android:layout_width="243dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <!--    <com.google.android.material.textfield.TextInputEditText-->
-    <!--        android:id="@+id/titleText"-->
+    <!--        android:id="@+id/titleTextHolder"-->
     <!--        android:layout_width="243dp"-->
     <!--        android:layout_height="47dp"-->
     <!--        android:layout_marginTop="10dp"-->
@@ -81,11 +71,30 @@
     <!--        android:textSize="19sp" />-->
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/titleTextHolder"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="218dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTextLayout"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="عنوان"
+            android:inputType="text"
+            android:textSize="19sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/descriptionTextLayout"
-        android:layout_width="352dp"
-        android:layout_height="89dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="351dp"
+        android:layout_height="70dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -96,7 +105,6 @@
             android:id="@+id/descriptionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:hint="توضیحات"
             android:textSize="19sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -105,40 +113,29 @@
         android:id="@+id/issueImageView"
         android:layout_width="90dp"
         android:layout_height="91dp"
-        app:layout_constraintBottom_toBottomOf="@+id/titleText"
-        app:layout_constraintEnd_toStartOf="@+id/titleText"
-        app:layout_constraintStart_toStartOf="@+id/descriptionTextLayout"
-        app:layout_constraintTop_toTopOf="@+id/textView10"
+        app:layout_constraintBottom_toBottomOf="@+id/titleTextHolder"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
+        app:layout_constraintStart_toEndOf="@+id/titleTextHolder"
+        app:layout_constraintTop_toTopOf="@+id/titleTextHolder"
         app:srcCompat="@android:drawable/ic_menu_camera" />
-
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/title"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="استان:"
+        android:layout_marginTop="20dp"
+        android:text="استان"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/titleText"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        app:layout_constraintStart_toStartOf="@+id/titleTextHolder"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextHolder" />
 
     <Spinner
         android:id="@+id/provinceSpinner"
         android:layout_width="248dp"
         android:layout_height="36dp"
-        android:layout_marginEnd="48dp"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
-        app:layout_constraintEnd_toStartOf="@+id/textView12"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
         app:layout_constraintTop_toTopOf="@+id/textView12"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -148,7 +145,7 @@
         android:layout_height="36dp"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView13"
-        app:layout_constraintEnd_toEndOf="@+id/provinceSpinner"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTextLayout"
         app:layout_constraintTop_toTopOf="@+id/textView13" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

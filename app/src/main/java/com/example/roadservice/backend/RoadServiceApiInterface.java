@@ -11,8 +11,15 @@ import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.io.citizen.RateIssueRequest;
 import com.example.roadservice.backend.io.citizen.RateIssueResponse;
+import com.example.roadservice.backend.io.specialist.CreateMissionRequest;
+import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
+import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
+import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
+import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
 import com.example.roadservice.backend.io.team.UpdateLocationRequest;
 import com.example.roadservice.backend.io.team.UpdateLocationResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -45,4 +52,12 @@ public interface RoadServiceApiInterface {
     @POST("/api/citizen/report-issue/")
     Call<AddIssueResponse> addIssue(@Body AddIssueRequest data);
 
+    @POST("/api/expert/issues/")
+    Call<List<PendingIssueResponse>> pendingIssuesList();
+
+    @POST("/api/expert/reject-issue/")
+    Call<RejectIssueResponse> rejectIssue(@Body RejectIssueRequest data);
+
+    @POST("/api/expert/accept-issue/")
+    Call<CreateMissionResponse> createMission(@Body CreateMissionRequest data);
 }

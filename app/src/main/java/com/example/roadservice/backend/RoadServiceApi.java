@@ -13,10 +13,16 @@ import com.example.roadservice.backend.io.citizen.CurrentIssueRequest;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.io.citizen.RateIssueRequest;
 import com.example.roadservice.backend.io.citizen.RateIssueResponse;
+import com.example.roadservice.backend.io.specialist.CreateMissionRequest;
+import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
+import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
+import com.example.roadservice.backend.io.specialist.RejectIssueRequest;
+import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
 import com.example.roadservice.backend.io.team.UpdateLocationRequest;
 import com.example.roadservice.backend.io.team.UpdateLocationResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -74,6 +80,24 @@ public class RoadServiceApi {
     public RegionsResponse regions() throws IOException {
         Call<RegionsResponse> call = api.regions();
         Response<RegionsResponse> response = call.execute();
+        return response.body();
+    }
+
+    public List<PendingIssueResponse> pendingIssuesList() throws IOException {
+        Call<List<PendingIssueResponse>> call = api.pendingIssuesList();
+        Response<List<PendingIssueResponse>> response = call.execute();
+        return response.body();
+    }
+
+    public RejectIssueResponse rejectIssue(RejectIssueRequest reqData) throws IOException {
+        Call<RejectIssueResponse> call = api.rejectIssue(reqData);
+        Response<RejectIssueResponse> response = call.execute();
+        return response.body();
+    }
+
+    public CreateMissionResponse createMission(CreateMissionRequest reqData) throws IOException {
+        Call<CreateMissionResponse> call = api.createMission(reqData);
+        Response<CreateMissionResponse> response = call.execute();
         return response.body();
     }
 }
