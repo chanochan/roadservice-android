@@ -23,13 +23,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends RSAppCompatActivity {
-    ThreadPoolExecutor threadPoolExecutor;
+    private ThreadPoolExecutor threadPoolExecutor;
     private LoginHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("ورود");
 
         findViewById(R.id.loginBtn).setOnClickListener(v -> {
             System.out.println("HIIII");
@@ -42,8 +43,6 @@ public class LoginActivity extends RSAppCompatActivity {
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
         handler = new LoginHandler(Looper.getMainLooper(), this);
-
-        setTitle("ورود");
     }
 
     private void startRegister() {
