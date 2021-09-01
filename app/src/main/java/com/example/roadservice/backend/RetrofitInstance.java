@@ -1,10 +1,6 @@
 package com.example.roadservice.backend;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.example.roadservice.R;
-import com.example.roadservice.RoadServiceApplication;
+import com.example.roadservice.models.Database;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,14 +16,9 @@ public class RetrofitInstance {
             .writeTimeout(10, TimeUnit.SECONDS)
             .retryOnConnectionFailure(false)
             .addInterceptor(chain -> {
-                Context ctx = RoadServiceApplication.getAppContext();
-                SharedPreferences sp = ctx.getSharedPreferences(
-                        ctx.getString(R.string.preference_file_key),
-                        Context.MODE_PRIVATE
-                );
-                String token = sp.getString("AUTH", "");
+                String token = Database.getToken(null);
                 Request newRequest;
-                if (token.length() == 0)
+                if (token == null)
                     newRequest = chain.request().newBuilder()
                             .build();
                 else

@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.roadservice.R;
+import com.example.roadservice.ui.RSAppCompatActivity;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Point;
@@ -45,10 +45,9 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 /**
- * Drop a marker at a specific location and then perform
- * reverse geocoding to retrieve and display the location's address
+ * Drop a marker at a specific location
  */
-public class SelectLocationActivity extends AppCompatActivity implements PermissionsListener, OnMapReadyCallback {
+public class SelectLocationActivity extends RSAppCompatActivity implements PermissionsListener, OnMapReadyCallback {
 
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
     private MapView mapView;

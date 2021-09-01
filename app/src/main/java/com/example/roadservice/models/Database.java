@@ -1,5 +1,11 @@
 package com.example.roadservice.models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.example.roadservice.R;
+import com.example.roadservice.RoadServiceApplication;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +15,7 @@ public class Database {
     private static ArrayList<County> counties = null;
     private static List<Machine> machines = null;
     private static List<Skill> skills = null;
+    private static Profile profile = null;
 
     private static List<MissionType> missionTypes = null;
     private static Issue issue;
@@ -107,5 +114,36 @@ public class Database {
             if (skill.id == id)
                 return skill;
         return null;
+    }
+
+    public static Profile getProfile() {
+        return profile;
+    }
+
+    public static void setProfile(Profile profile) {
+        Database.profile = profile;
+    }
+
+    public static void setToken(String token) {
+        Context ctx = RoadServiceApplication.getAppContext();
+        SharedPreferences sp = ctx.getSharedPreferences(
+                ctx.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+        );
+        SharedPreferences.Editor editor = sp.edit();
+        if (token == null)
+            editor.remove("AUTH");
+        else
+            editor.putString("AUTH", token);
+        editor.apply();
+    }
+
+    public static String getToken(String defValue) {
+        Context ctx = RoadServiceApplication.getAppContext();
+        SharedPreferences sp = ctx.getSharedPreferences(
+                ctx.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+        );
+        return sp.getString("AUTH", defValue);
     }
 }

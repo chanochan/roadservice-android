@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.roadservice.R;
@@ -32,6 +31,8 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_citizen_dashboard);
+        setupNavigationDrawer();
+        setTitle("ثبت مشکل جدید");
 
         handler = new CitizenDashboardHandler(Looper.getMainLooper(), this);
         threadPoolExecutor = new ThreadPoolExecutor(

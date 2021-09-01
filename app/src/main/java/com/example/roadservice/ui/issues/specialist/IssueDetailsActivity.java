@@ -33,6 +33,8 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_issue_details);
+        setupNavigationDrawer();
+        setTitle("جزییات مشکل");
 
         issue = Database.getIssue();
         Fragment fragment = CurrentIssueFragment.newInstance(issue);
@@ -51,8 +53,6 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
         handler = new IssueDetailsHandler(Looper.getMainLooper(), this);
-
-        setTitle("جزییات مشکل");
     }
 
     private void rejectIssue() {

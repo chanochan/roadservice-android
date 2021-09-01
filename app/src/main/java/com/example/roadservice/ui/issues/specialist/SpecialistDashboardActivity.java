@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,13 +14,11 @@ import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
 import com.example.roadservice.backend.threads.specialist.PendingIssuesListThread;
 import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
-import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.issues.specialist.adapters.PendingIssueAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -37,6 +34,8 @@ public class SpecialistDashboardActivity extends RSAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specialist_dashboard);
+        setupNavigationDrawer();
+        setTitle("مشکلات جدید");
 
         issues = new ArrayList<>();
 
@@ -50,7 +49,6 @@ public class SpecialistDashboardActivity extends RSAppCompatActivity {
         );
         handler = new SpecialistDashboardHandler(Looper.getMainLooper(), this);
 
-        setTitle("مشکلات جدید");
         updateDataSet();
     }
 

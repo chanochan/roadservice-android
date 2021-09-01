@@ -17,6 +17,8 @@ import com.example.roadservice.backend.io.accounts.ProfileRequest;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
 import com.example.roadservice.backend.threads.RegionsThread;
 import com.example.roadservice.backend.threads.accounts.ProfileThread;
+import com.example.roadservice.models.Database;
+import com.example.roadservice.models.Profile;
 import com.example.roadservice.ui.accounts.LoginActivity;
 import com.example.roadservice.ui.accounts.RegisterActivity;
 import com.example.roadservice.ui.issues.citizen.CitizenDashboardActivity;
@@ -109,9 +111,13 @@ public class MainActivity extends AppCompatActivity {
             if (msg.arg1 == ProfileResponse.CODE) {
                 // TODO handle moderators login
                 ProfileResponse resp = (ProfileResponse) msg.obj;
-                Log.d("SHIT", resp.role);
                 if (resp == null)
                     return;
+                Log.d("SHIT", resp.role);
+                Database.setProfile(new Profile(resp.firstName + ' ' + resp.lastName,
+                        resp.role,
+                        resp.phoneNumber
+                ));
                 switch (resp.role) {
                     case "CZ":
                         target.gotoDashboard(CitizenDashboardActivity.class);

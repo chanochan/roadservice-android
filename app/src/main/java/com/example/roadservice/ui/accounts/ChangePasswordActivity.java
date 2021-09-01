@@ -1,21 +1,22 @@
 package com.example.roadservice.ui.accounts;
 
 import android.os.Bundle;
-import android.view.View;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.roadservice.R;
+import com.example.roadservice.ui.RSAppCompatActivity;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends RSAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
+        setupNavigationDrawer();
+        setTitle("تغییر گذرواژه");
+
+        findViewById(R.id.changePasswordButton).setOnClickListener(v -> submit());
     }
 
-    public void finish(View view) {
-        finish();
+    private void submit() {
     }
 }

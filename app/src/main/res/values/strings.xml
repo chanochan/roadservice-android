@@ -2,6 +2,7 @@
     <string name="mapbox_access_token">
         pk.eyJ1IjoiaGF3YXdvYjQyNCIsImEiOiJja3N4N2FqNmkwMDl5MnZwOTY0end1czd0In0.zzBK2qxj_-ecFMccpgHqgw
     </string>
+    <string name="preference_file_key">com.example.roadservice.ROAD_SERVICE</string>
     <string name="app_name">Road Service Mobile</string>
     <string name="phone_number">شماره موبایل</string>
     <string name="password">رمز عبور</string>
@@ -50,15 +51,12 @@
     <string name="WELCOME_MSG">شما به عنوان فرهاد گل‌کلمیان وارد سامانه شده‌اید.</string>
     <string name="allowed_ops">فعالیت‌های مجاز</string>
     <string name="view_mission">مشاهده‌ی ماموریت</string>
-    <string name="change_password">تغییر رمز عبور</string>
+    <string name="change_password">تغییر گذرواژه</string>
     <string name="issues_list">لیست مشکلات</string>
     <string name="review_issues">بررسی مشکلات</string>
     <string name="new_issue">مشکل جدید</string>
     <string name="current_issue">مشکل فعلی</string>
     <string name="rate_issue">ارزیابی کیفیت رفع مشکل</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="preference_file_key">com.example.roadservice.ROAD_SERVICE</string>
     <string name="issue_image">Issue image</string>
     <string name="issue_details">ماموریت</string>
     <string name="mission_details">منابع</string>
@@ -69,4 +67,8 @@
     <string name="revolutionary">سریع فوری انقلابی</string>
     <string name="number">عدد</string>
     <string name="no_mission_for_you">در حال حاضر ماموریتی به شما تخصیص نیافته است.</string>
+    <string name="dashboard">داشبورد</string>
+    <string name="logout">خروج</string>
+    <string name="sample_phone">۰۹۱۲۳۴۵۶۷۸۹</string>
+    <string name="user_name">نام کاربر</string>
 </resources>

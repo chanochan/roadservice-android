@@ -30,6 +30,8 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_dashboard);
         setTitle("مشاهده‌ی ماموریت");
+        setupNavigationDrawer();
+        findViewById(R.id.noMissionText).setVisibility(View.INVISIBLE);
 
         missionFragment = TeamMissionFragment.newInstance(SampleData.ISSUE, SampleData.getMission());
 
@@ -43,7 +45,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         );
         handler = new TeamDashboardHandler(Looper.getMainLooper(), this);
 
-        updateData();
+//        updateData();
     }
 
     public void updateData() {
@@ -80,6 +82,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
                 CurrentMissionResponse resp = (CurrentMissionResponse) msg.obj;
                 if (resp == null) {
                     Log.d("SHIT", "Empty response");
+                    target.setData(null, null);
                     return;
                 }
                 target.setData(resp.getIssue(), resp.getMission());

@@ -1,8 +1,6 @@
 package com.example.roadservice.ui.accounts;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -13,6 +11,7 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.threads.accounts.LoginThread;
+import com.example.roadservice.models.Database;
 import com.example.roadservice.ui.MainActivity;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.accounts.structs.LoginData;
@@ -101,13 +100,7 @@ public class LoginActivity extends RSAppCompatActivity {
                     Log.d("SHIT", "Empty response");
                     return;
                 }
-                SharedPreferences sp = target.getSharedPreferences(
-                        target.getString(R.string.preference_file_key),
-                        Context.MODE_PRIVATE
-                );
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("AUTH", resp.token);
-                editor.apply();
+                Database.setToken(resp.token);
                 target.loginDone();
             }
         }

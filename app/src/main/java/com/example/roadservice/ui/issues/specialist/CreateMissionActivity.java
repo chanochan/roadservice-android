@@ -42,6 +42,8 @@ public class CreateMissionActivity extends RSAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_mission);
+        setupNavigationDrawer();
+        setTitle("ایجاد ماموریت");
 
         machinesData = new ArrayList<>();
         for (Machine machine : Database.getMachines())
@@ -70,8 +72,6 @@ public class CreateMissionActivity extends RSAppCompatActivity {
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
         handler = new CreateMissionHandler(Looper.getMainLooper(), this);
-
-        setTitle("ایجاد ماموریت");
     }
 
     @Override
