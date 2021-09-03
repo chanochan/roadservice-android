@@ -8,11 +8,11 @@ public class AddIssueResponse {
 
     @SerializedName("lat")
     @Expose
-    public double latitude;
+    public String latitude;
 
     @SerializedName("long")
     @Expose
-    public double longitude;
+    public String longitude;
 
     @SerializedName("title")
     @Expose

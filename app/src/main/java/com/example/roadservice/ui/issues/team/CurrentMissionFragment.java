@@ -53,6 +53,8 @@ public class CurrentMissionFragment extends Fragment {
         skillsRecycler.setLayoutManager(tempLayoutManager);
         skillsRecycler.setAdapter(new ConstItemsCounterAdapter(mission.getSkills(), "تیم"));
 
+        showData();
+
         return view;
     }
 
@@ -63,14 +65,19 @@ public class CurrentMissionFragment extends Fragment {
     }
 
     private void showData() {
-        missionTypeText.setText(mission.getType().getName());
+        if (missionTypeText != null)
+            missionTypeText.setText(mission.getType().getName());
 
-        ConstItemsCounterAdapter machinesAdapter = (ConstItemsCounterAdapter) machinesRecycler.getAdapter();
-        machinesAdapter.setLocalDataSet(mission.getMachines());
-        machinesAdapter.notifyDataSetChanged();
+        if (machinesRecycler != null) {
+            ConstItemsCounterAdapter machinesAdapter = (ConstItemsCounterAdapter) machinesRecycler.getAdapter();
+            machinesAdapter.setLocalDataSet(mission.getMachines());
+            machinesAdapter.notifyDataSetChanged();
+        }
 
-        ConstItemsCounterAdapter skillsAdapter = (ConstItemsCounterAdapter) skillsRecycler.getAdapter();
-        skillsAdapter.setLocalDataSet(mission.getSkills());
-        skillsAdapter.notifyDataSetChanged();
+        if (skillsRecycler != null) {
+            ConstItemsCounterAdapter skillsAdapter = (ConstItemsCounterAdapter) skillsRecycler.getAdapter();
+            skillsAdapter.setLocalDataSet(mission.getSkills());
+            skillsAdapter.notifyDataSetChanged();
+        }
     }
 }

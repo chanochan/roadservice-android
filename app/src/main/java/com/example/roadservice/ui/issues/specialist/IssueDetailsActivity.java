@@ -63,6 +63,7 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
     private void acceptIssue() {
         Intent intent = new Intent(this, CreateMissionActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void onDone() {
@@ -71,10 +72,7 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, SpecialistDashboardActivity.class);
-        startActivity(intent);
-        finish();
+        openDashboard();
     }
 
     private static class IssueDetailsHandler extends Handler {

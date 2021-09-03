@@ -31,7 +31,8 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         setContentView(R.layout.activity_team_dashboard);
         setTitle("مشاهده‌ی ماموریت");
         setupNavigationDrawer();
-        findViewById(R.id.noMissionText).setVisibility(View.INVISIBLE);
+        findViewById(R.id.missionDoneLayout).setVisibility(View.GONE);
+        findViewById(R.id.teamDashboardFragment).setVisibility(View.GONE);
 
         missionFragment = TeamMissionFragment.newInstance(SampleData.ISSUE, SampleData.getMission());
 
@@ -45,7 +46,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         );
         handler = new TeamDashboardHandler(Looper.getMainLooper(), this);
 
-//        updateData();
+        updateData();
     }
 
     public void updateData() {
@@ -57,10 +58,10 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         if (issue != null) {
             missionFragment.setData(issue, mission);
             findViewById(R.id.teamDashboardFragment).setVisibility(View.VISIBLE);
-            findViewById(R.id.noMissionText).setVisibility(View.INVISIBLE);
+            findViewById(R.id.missionDoneLayout).setVisibility(View.GONE);
         } else {
-            findViewById(R.id.teamDashboardFragment).setVisibility(View.INVISIBLE);
-            findViewById(R.id.noMissionText).setVisibility(View.VISIBLE);
+            findViewById(R.id.teamDashboardFragment).setVisibility(View.GONE);
+            findViewById(R.id.missionDoneLayout).setVisibility(View.VISIBLE);
         }
     }
 
@@ -85,7 +86,11 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
                     target.setData(null, null);
                     return;
                 }
-                target.setData(resp.getIssue(), resp.getMission());
+                Log.d("SHIT", "Full response");
+                if (resp.status)
+                    target.setData(resp.getIssue(), resp.getMission());
+                else
+                    target.setData(null, null);
             }
         }
     }

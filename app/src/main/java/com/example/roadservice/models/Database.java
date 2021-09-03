@@ -7,7 +7,6 @@ import com.example.roadservice.R;
 import com.example.roadservice.RoadServiceApplication;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Database {
@@ -15,19 +14,19 @@ public class Database {
     private static ArrayList<County> counties = null;
     private static List<Machine> machines = null;
     private static List<Skill> skills = null;
+    private static List<MissionType> missionTypes = null;
     private static Profile profile = null;
 
-    private static List<MissionType> missionTypes = null;
     private static Issue issue;
 
     public static ArrayList<Province> getProvinces() {
-//        return provinces;
-        ArrayList<Province> result = new ArrayList<>();
-        result.add(new Province(1, "تهران"));
-        result.add(new Province(2, "هرمزگان"));
-//        for (int i = 0; i < 32; i++)
-//            result.add(new Province(i, "چهارمحال و بختیاری"));
-        return result;
+        return provinces;
+//        ArrayList<Province> result = new ArrayList<>();
+//        result.add(new Province(1, "تهران"));
+//        result.add(new Province(2, "هرمزگان"));
+////        for (int i = 0; i < 32; i++)
+////            result.add(new Province(i, "چهارمحال و بختیاری"));
+//        return result;
     }
 
     public static void setProvinces(ArrayList<Province> provinces) {
@@ -44,16 +43,16 @@ public class Database {
 
     public static ArrayList<County> getProvinceCounties(int id) {
         ArrayList<County> result = new ArrayList<>();
-        if (id == 1) {
-            result.add(new County(3, 1, "تهران"));
-            result.add(new County(4, 1, "دماوند"));
-            return result;
-        }
-        if (id == 2) {
-            result.add(new County(5, 2, "قشم"));
-            result.add(new County(6, 2, "بندر عبّاس"));
-            return result;
-        }
+//        if (id == 1) {
+//            result.add(new County(3, 1, "تهران"));
+//            result.add(new County(4, 1, "دماوند"));
+//            return result;
+//        }
+//        if (id == 2) {
+//            result.add(new County(5, 2, "قشم"));
+//            result.add(new County(6, 2, "بندر عبّاس"));
+//            return result;
+//        }
         for (County county : counties)
             if (county.getProvinceId() == id)
                 result.add(county);
@@ -61,8 +60,8 @@ public class Database {
     }
 
     public static Issue getIssue() {
-//        return issue;
-        return SampleData.ISSUE;
+        return issue;
+//        return SampleData.ISSUE;
     }
 
     public static void setIssue(Issue issue) {
@@ -70,8 +69,8 @@ public class Database {
     }
 
     public static List<Machine> getMachines() {
-        return Arrays.asList(SampleData.MACHINES);
-//        return machines;
+//        return Arrays.asList(SampleData.MACHINES);
+        return machines;
     }
 
     public static void setMachines(List<Machine> machines) {
@@ -79,8 +78,8 @@ public class Database {
     }
 
     public static List<Skill> getSkills() {
-//        return skills;
-        return Arrays.asList(SampleData.SKILLS);
+        return skills;
+//        return Arrays.asList(SampleData.SKILLS);
     }
 
     public static void setSkills(List<Skill> skills) {

@@ -6,7 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
 import com.example.roadservice.backend.threads.specialist.CreateMissionThread;
 import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Machine;
+import com.example.roadservice.models.MissionType;
 import com.example.roadservice.models.Skill;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.issues.specialist.adapters.ItemsCounterAdapter;
@@ -30,13 +32,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CreateMissionActivity extends RSAppCompatActivity {
-    // TODO select mission type
     private List<ItemCounter> machinesData;
     private List<ItemCounter> skillsData;
     private RecyclerView machinesRecycler;
     private RecyclerView skillsRecycler;
     private ThreadPoolExecutor threadPoolExecutor;
     private CreateMissionHandler handler;
+    private Spinner typesSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,17 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         for (Skill skill : Database.getSkills())
             skillsData.add(new ItemCounter(skill));
 
-        Button saveBtn = findViewById(R.id.addMissionBtn);
-        saveBtn.setOnClickListener(v -> saveMission());
+        findViewById(R.id.addMissionBtn).setOnClickListener(v -> saveMission());
+        findViewById(R.id.discardMissionBtn).setOnClickListener(v -> discardMission());
+
+        typesSpinner = findViewById(R.id.missionTypeSpinner);
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
+                this,
+                R.layout.spinner_item_mission_type
+        );
+        typesSpinner.setAdapter(typesAdapter);
+        for (MissionType type : Database.getMissionTypes())
+            typesAdapter.add(type.getName());
 
         RecyclerView.LayoutManager tempLayoutManager;
 
@@ -83,12 +94,13 @@ public class CreateMissionActivity extends RSAppCompatActivity {
     private void saveMission() {
         CreateMissionRequest req = new CreateMissionRequest();
         req.issueId = Database.getIssue().getId();
-        req.missionTypeId = 1;
+        req.missionTypeId = Database.getMissionTypes().get(typesSpinner.getSelectedItemPosition()).getId();
         req.machineReqs = new ArrayList<>();
         req.skillReqs = new ArrayList<>();
 
         for (ItemCounter counter : machinesData) {
             Machine machine = (Machine) counter.getObj();
+            if (counter.getCount() == 0) continue;
             req.machineReqs.add(new CreateMissionRequest.MachineRequirement(
                     machine.id,
                     counter.getCount()
@@ -96,18 +108,31 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         }
         for (ItemCounter counter : skillsData) {
             Skill skill = (Skill) counter.getObj();
+            if (counter.getCount() == 0) continue;
             req.skillReqs.add(new CreateMissionRequest.SkillRequirement(
                     skill.id,
                     counter.getCount()
             ));
         }
 
+        Log.d("CreateMissionActivity", "Starting thread");
+
         CreateMissionThread thread = new CreateMissionThread(handler, req);
         threadPoolExecutor.execute(thread);
     }
 
-    private void onDone() {
+    private void discardMission() {
+        Intent intent = new Intent(this, IssueDetailsActivity.class);
+        startActivity(intent);
         finish();
+    }
+
+    private void onDone() {
+        openDashboard();
+    }
+
+    private void onFailed() {
+        Log.d("CreateMissionResponse", "Error occurred in submission");
     }
 
     private static class CreateMissionHandler extends Handler {
@@ -123,6 +148,7 @@ public class CreateMissionActivity extends RSAppCompatActivity {
             CreateMissionActivity target = this.target.get();
             if (target == null)
                 return;
+            Log.d("CreateMissionActivity", "Received response");
             if (msg.arg1 == CreateMissionResponse.CODE) {
                 // TODO handle errors
                 CreateMissionResponse resp = (CreateMissionResponse) msg.obj;
@@ -132,6 +158,8 @@ public class CreateMissionActivity extends RSAppCompatActivity {
                 }
                 if (resp.status)
                     target.onDone();
+                else
+                    target.onFailed();
             }
         }
     }

@@ -78,6 +78,10 @@ public class TeamMissionFragment extends Fragment {
 
             }
         });
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.teamTabsFragment, currentIssueFragment)
+                .commit();
 
         return view;
     }

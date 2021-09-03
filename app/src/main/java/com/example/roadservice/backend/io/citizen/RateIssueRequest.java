@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 public class RateIssueRequest {
     @SerializedName("rating")
     @Expose
-    public int rating;
+    public Integer rating;
 
-    public RateIssueRequest(int rating) {
+    public RateIssueRequest(Integer rating) {
         this.rating = rating;
     }
 }

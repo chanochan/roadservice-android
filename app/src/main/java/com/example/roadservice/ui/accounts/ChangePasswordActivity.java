@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class ChangePasswordActivity extends RSAppCompatActivity {
+    private static final String TAG = "ChangePasswordActivity";
     private ThreadPoolExecutor executor;
     private ChangePasswordHandler handler;
     private TextInputLayout oldLayout, newLayout, repeatLayout;
@@ -31,6 +32,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
         setContentView(R.layout.activity_change_password);
         setupNavigationDrawer();
         setTitle("تغییر گذرواژه");
+        navigationView.setCheckedItem(R.id.passwordNavigationItem);
 
         findViewById(R.id.changePasswordButton).setOnClickListener(v -> submit());
 
@@ -59,12 +61,13 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
     }
 
     private void onDone() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, getDashboardClass());
         startActivity(intent);
         finish();
     }
 
     private static class ChangePasswordHandler extends Handler {
+        private static final String TAG = "ChangePasswordHandler";
         private final WeakReference<ChangePasswordActivity> target;
 
         ChangePasswordHandler(Looper looper, ChangePasswordActivity target) {
@@ -81,13 +84,14 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
                 // TODO handle errors
                 ChangePasswordResponse resp = (ChangePasswordResponse) msg.obj;
                 if (resp == null) {
-                    Log.d("SHIT", "Empty response");
+                    Log.d(TAG, "Empty response");
                     return;
                 }
                 if (resp.status) {
                     target.onDone();
                     return;
                 }
+                Log.d(TAG, "False status");
             }
         }
     }

@@ -9,6 +9,8 @@ import com.example.roadservice.backend.io.citizen.RateIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
 public class RateIssueThread extends BaseBackendThread {
+    private static final String TAG = "RateIssueThread";
+
     public RateIssueThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -16,9 +18,11 @@ public class RateIssueThread extends BaseBackendThread {
     @Override
     protected RateIssueResponse backendMethod() {
         try {
+            Log.d(TAG, "Send request");
             RateIssueResponse resp = new RoadServiceApi().rateIssue((RateIssueRequest) request);
+            Log.d(TAG, "Receive response");
             if (resp == null) {
-                Log.d("SHIT", "Empty response in rate issue thread!!");
+                Log.d(TAG, "Empty response in rate issue thread!!");
             }
             return resp;
         } catch (Exception e) {

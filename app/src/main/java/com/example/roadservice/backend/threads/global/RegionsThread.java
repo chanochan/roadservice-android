@@ -1,11 +1,12 @@
-package com.example.roadservice.backend.threads;
+package com.example.roadservice.backend.threads.global;
 
 import android.os.Handler;
 import android.util.Log;
 
 import com.example.roadservice.backend.RoadServiceApi;
-import com.example.roadservice.backend.io.RegionsResponse;
+import com.example.roadservice.backend.io.global.RegionsResponse;
 import com.example.roadservice.backend.io.accounts.RegisterResponse;
+import com.example.roadservice.backend.threads.BaseBackendThread;
 import com.example.roadservice.models.County;
 import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Province;

@@ -55,14 +55,23 @@
 
     <Button
         android:id="@+id/submitRateBtn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/save"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/issueRatingBar"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/discardRateBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/discard"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/issueRatingBar"
+        app:layout_constraintTop_toTopOf="@+id/submitRateBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,8 @@ package com.example.roadservice.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -10,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.roadservice.R;
 import com.example.roadservice.models.Database;
+import com.example.roadservice.models.Profile;
 import com.example.roadservice.ui.accounts.ChangePasswordActivity;
 import com.example.roadservice.ui.issues.citizen.CitizenDashboardActivity;
 import com.example.roadservice.ui.issues.specialist.SpecialistDashboardActivity;
@@ -72,5 +75,42 @@ public class RSAppCompatActivity extends AppCompatActivity {
             finish();
             return true;
         });
+
+        View navigationHeader = navigationView.getHeaderView(0);
+        Profile profile = Database.getProfile();
+        TextView nameTextView = navigationHeader.findViewById(R.id.navNameText);
+        nameTextView.setText(profile.getName());
+        TextView phoneTextView = navigationHeader.findViewById(R.id.navPhoneText);
+        phoneTextView.setText(profile.getPhone());
+    }
+
+    public Class<?> getDashboardClass() {
+        Profile profile = Database.getProfile();
+        if (profile == null)
+            return MainActivity.class;
+        switch (profile.getRole()) {
+            case "CZ":
+                return CitizenDashboardActivity.class;
+            case "SM":
+                return TeamDashboardActivity.class;
+            case "CE":
+                return SpecialistDashboardActivity.class;
+            default:
+                return MainActivity.class;
+        }
+    }
+
+    public void openDashboard() {
+        Intent intent = new Intent(this, getDashboardClass());
+        startActivity(intent);
+        finish();
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view == null)
+            view = new View(this);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

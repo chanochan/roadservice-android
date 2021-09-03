@@ -1,6 +1,5 @@
 package com.example.roadservice.backend;
 
-import com.example.roadservice.backend.io.RegionsResponse;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.io.accounts.ProfileRequest;
@@ -13,6 +12,10 @@ import com.example.roadservice.backend.io.citizen.CurrentIssueRequest;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.io.citizen.RateIssueRequest;
 import com.example.roadservice.backend.io.citizen.RateIssueResponse;
+import com.example.roadservice.backend.io.global.MachineResponse;
+import com.example.roadservice.backend.io.global.MissionTypeResponse;
+import com.example.roadservice.backend.io.global.RegionsResponse;
+import com.example.roadservice.backend.io.global.SkillResponse;
 import com.example.roadservice.backend.io.specialist.CreateMissionRequest;
 import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
 import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
@@ -36,6 +39,30 @@ public class RoadServiceApi {
 
     public RoadServiceApi() {
         api = RetrofitInstance.getApi().create(RoadServiceApiInterface.class);
+    }
+
+    public RegionsResponse regions() throws IOException {
+        Call<RegionsResponse> call = api.regions();
+        Response<RegionsResponse> response = call.execute();
+        return response.body();
+    }
+
+    public List<MachineResponse> machines() throws IOException {
+        Call<List<MachineResponse>> call = api.machines();
+        Response<List<MachineResponse>> response = call.execute();
+        return response.body();
+    }
+
+    public List<SkillResponse> skills() throws IOException {
+        Call<List<SkillResponse>> call = api.skills();
+        Response<List<SkillResponse>> response = call.execute();
+        return response.body();
+    }
+
+    public List<MissionTypeResponse> missionTypes() throws IOException {
+        Call<List<MissionTypeResponse>> call = api.missionTypes();
+        Response<List<MissionTypeResponse>> response = call.execute();
+        return response.body();
     }
 
     public UpdateLocationResponse updateLocation(UpdateLocationRequest reqData) throws Exception {
@@ -80,12 +107,6 @@ public class RoadServiceApi {
         return response.body();
     }
 
-    public RegionsResponse regions() throws IOException {
-        Call<RegionsResponse> call = api.regions();
-        Response<RegionsResponse> response = call.execute();
-        return response.body();
-    }
-
     public List<PendingIssueResponse> pendingIssuesList() throws IOException {
         Call<List<PendingIssueResponse>> call = api.pendingIssuesList();
         Response<List<PendingIssueResponse>> response = call.execute();
@@ -107,7 +128,15 @@ public class RoadServiceApi {
     public CurrentMissionResponse currentMission() throws IOException {
         Call<CurrentMissionResponse> call = api.currentMission();
         Response<CurrentMissionResponse> response = call.execute();
-        return response.body();
+        if (response.code() == 200) {
+            CurrentMissionResponse resp = response.body();
+            if (resp != null)
+                resp.status = true;
+            return resp;
+        }
+        CurrentMissionResponse resp = new CurrentMissionResponse();
+        resp.status = false;
+        return resp;
     }
 
     public EndMissionResponse endMission(EndMissionRequest reqData) throws IOException {

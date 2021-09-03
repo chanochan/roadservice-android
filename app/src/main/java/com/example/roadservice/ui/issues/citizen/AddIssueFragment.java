@@ -174,16 +174,14 @@ public class AddIssueFragment extends Fragment {
     private void updateProvinces() {
         provinceAdapter.clear();
         provinces = Database.getProvinces();
-        for (Province province :
-                provinces)
+        for (Province province : provinces)
             provinceAdapter.add(province.getName());
     }
 
     private void updateCounties(int id) {
         countyAdapter.clear();
         counties = Database.getProvinceCounties(id);
-        for (County county :
-                counties)
+        for (County county : counties)
             countyAdapter.add(county.getName());
         countySpinner.setSelection(0);
     }
@@ -199,11 +197,10 @@ public class AddIssueFragment extends Fragment {
 
     private void submit() {
         collectData();
-        // TODO add county view
         AddIssueRequest request = new AddIssueRequest(
                 issue.getTitle(),
                 issue.getDescription(),
-                3,
+                issue.getCounty(),
                 issue.getLocation().getLatitude(),
                 issue.getLocation().getLongitude()
         );
@@ -222,8 +219,9 @@ public class AddIssueFragment extends Fragment {
 
     private void onDone() {
         CitizenDashboardActivity activity = (CitizenDashboardActivity) getActivity();
+        assert activity != null;
         activity.finish();
-        startActivity(new Intent());
+        startActivity(new Intent(activity, CitizenDashboardActivity.class));
     }
 
     private static class AddIssueHandler extends Handler {

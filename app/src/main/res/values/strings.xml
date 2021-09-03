@@ -7,7 +7,7 @@
     <string name="phone_number">شماره موبایل</string>
     <string name="password">رمز عبور</string>
     <string name="login">ورود</string>
-    <string name="register">ثبت نام</string>
+    <string name="register">ثبت‌نام</string>
     <string name="last_name">نام خانوادگی</string>
     <string name="first_name">نام</string>
     <string name="email_addreaa">آدرس ایمیل</string>
@@ -66,9 +66,18 @@
     <string name="mission_type">نوع ماموریت</string>
     <string name="revolutionary">سریع فوری انقلابی</string>
     <string name="number">عدد</string>
-    <string name="no_mission_for_you">در حال حاضر ماموریتی به شما تخصیص نیافته است.</string>
+    <string name="no_mission_for_you">تمامی ماموریت‌هایتان به پایان رسیده‌اند.</string>
     <string name="dashboard">داشبورد</string>
     <string name="logout">خروج</string>
     <string name="sample_phone">۰۹۱۲۳۴۵۶۷۸۹</string>
     <string name="user_name">نام کاربر</string>
+    <string name="discard">بی‌خیال</string>
+    <string name="mission_done_image">All missions done</string>
+    <string name="discard_mission">انصراف</string>
+    <string name="category">دسته</string>
+    <string name="network_error">مشکل در برقراری ارتباط</string>
+    <string name="try_again">تلاش مجدد</string>
+    <string name="login_failed">مشخصات وارد شده نادرست است.</string>
+    <string name="login_error_phone_length">شماره موبایل باید به شکل ۰۹xxxxxxxxx باشد</string>
+    <string name="error_required">پر کردن این مقدار ضروری است.</string>
 </resources>

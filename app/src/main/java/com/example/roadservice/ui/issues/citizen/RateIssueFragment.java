@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RatingBar;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +18,7 @@ import com.example.roadservice.backend.io.citizen.RateIssueRequest;
 import com.example.roadservice.backend.io.citizen.RateIssueResponse;
 import com.example.roadservice.backend.threads.citizen.RateIssueThread;
 import com.example.roadservice.models.Issue;
+import com.example.roadservice.ui.RSAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class RateIssueFragment extends Fragment {
+    private static final String TAG = "RateIssueFragment";
     private Issue issue;
     private ThreadPoolExecutor threadPoolExecutor;
     private RateIssueHandler handler;
@@ -53,8 +54,8 @@ public class RateIssueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rate_issue, container, false);
-        Button btn = view.findViewById(R.id.submitRateBtn);
-        btn.setOnClickListener(v -> submit());
+        view.findViewById(R.id.submitRateBtn).setOnClickListener(v -> submit());
+        view.findViewById(R.id.discardRateBtn).setOnClickListener(v -> discard());
         return view;
     }
 
@@ -65,13 +66,20 @@ public class RateIssueFragment extends Fragment {
         threadPoolExecutor.execute(thread);
     }
 
+    private void discard() {
+        Log.d(TAG, "Discard rating");
+        RateIssueRequest request = new RateIssueRequest(null);
+        RateIssueThread thread = new RateIssueThread(handler, request);
+        threadPoolExecutor.execute(thread);
+    }
+
     private void onDone() {
-        CitizenDashboardActivity activity = (CitizenDashboardActivity) getActivity();
-        activity.finish();
-        startActivity(new Intent());
+        RSAppCompatActivity activity = (RSAppCompatActivity) getActivity();
+        activity.openDashboard();
     }
 
     private static class RateIssueHandler extends Handler {
+        private static final String TAG = "RateIssueHandler";
         private final WeakReference<RateIssueFragment> target;
 
         RateIssueHandler(Looper looper, RateIssueFragment target) {
@@ -86,14 +94,15 @@ public class RateIssueFragment extends Fragment {
                 return;
             if (msg.arg1 != RateIssueResponse.CODE)
                 return;
-            // TODO handle login errors
             RateIssueResponse resp = (RateIssueResponse) msg.obj;
             if (resp == null) {
-                Log.d("SHIT", "Empty response");
+                Log.d(TAG, "Empty response");
                 return;
             }
+            Log.d(TAG, "Response status: " + resp.status);
             if (resp.status)
                 target.onDone();
+            // TODO handle errors
         }
     }
 }

@@ -16,6 +16,7 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.team.EndMissionRequest;
 import com.example.roadservice.backend.io.team.EndMissionResponse;
 import com.example.roadservice.backend.threads.team.EndMissionThread;
+import com.example.roadservice.ui.RSAppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.ref.WeakReference;
@@ -57,6 +58,7 @@ public class EndMissionFragment extends Fragment {
     }
 
     private void submit() {
+        ((RSAppCompatActivity) getActivity()).hideKeyboard();
         TextInputLayout input = this.getView().findViewById(R.id.reportTextLayout);
         String report = input.getEditText().getText().toString();
         EndMissionRequest req = new EndMissionRequest(report);

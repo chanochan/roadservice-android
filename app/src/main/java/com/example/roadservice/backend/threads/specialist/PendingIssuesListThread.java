@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.roadservice.backend.RoadServiceApi;
 import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
+import com.example.roadservice.models.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class PendingIssuesListThread extends BaseBackendThread {
                 Log.d("SHIT", "Empty response in here!!");
             else
                 return resp;
+            System.out.println(Database.getToken(""));
         } catch (Exception e) {
             // TODO handle exception
             e.printStackTrace();

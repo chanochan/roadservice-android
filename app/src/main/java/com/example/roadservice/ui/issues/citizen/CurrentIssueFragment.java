@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_current_issue, container, false);
 
+        Log.d("SHIT", "Running on create view");
         titleTextView = view.findViewById(R.id.myIssueTitleText);
         descriptionTextView = view.findViewById(R.id.myIssueDescText);
 
@@ -82,15 +84,18 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
     }
 
     private void showData() {
-        titleTextView.setText(issue.getTitle());
-        descriptionTextView.setText(issue.getDescription());
-        if (this.mapboxMap != null) {
+        if (titleTextView != null) {
+            titleTextView.setText(issue.getTitle());
+            descriptionTextView.setText(issue.getDescription());
+        }
+        if (mapboxMap != null) {
             CameraPosition position = new CameraPosition.Builder()
                     .target(new LatLng(issue.getLocation().getLatitude(), issue.getLocation().getLongitude()))
                     .zoom(13)
                     .build();
+            System.out.println(issue.getLocation().toString());
             mapboxMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(position), 3000);
+                    .newCameraPosition(position), 1);
         }
     }
 

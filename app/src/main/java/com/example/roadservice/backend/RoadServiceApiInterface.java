@@ -1,6 +1,5 @@
 package com.example.roadservice.backend;
 
-import com.example.roadservice.backend.io.RegionsResponse;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
@@ -11,6 +10,10 @@ import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.io.citizen.RateIssueRequest;
 import com.example.roadservice.backend.io.citizen.RateIssueResponse;
+import com.example.roadservice.backend.io.global.MachineResponse;
+import com.example.roadservice.backend.io.global.MissionTypeResponse;
+import com.example.roadservice.backend.io.global.RegionsResponse;
+import com.example.roadservice.backend.io.global.SkillResponse;
 import com.example.roadservice.backend.io.specialist.CreateMissionRequest;
 import com.example.roadservice.backend.io.specialist.CreateMissionResponse;
 import com.example.roadservice.backend.io.specialist.PendingIssueResponse;
@@ -34,6 +37,15 @@ public interface RoadServiceApiInterface {
     @GET("/api/regions/")
     Call<RegionsResponse> regions();
 
+    @GET("/api/machinery-types/")
+    Call<List<MachineResponse>> machines();
+
+    @GET("/api/specialities/")
+    Call<List<SkillResponse>> skills();
+
+    @GET("/api/mission-types/")
+    Call<List<MissionTypeResponse>> missionTypes();
+
     @POST("/api/serviceman/update-location/")
     Call<UpdateLocationResponse> updateLocation(@Body UpdateLocationRequest data);
 
@@ -55,7 +67,7 @@ public interface RoadServiceApiInterface {
     @POST("/api/citizen/report-issue/")
     Call<AddIssueResponse> addIssue(@Body AddIssueRequest data);
 
-    @POST("/api/expert/issues/")
+    @GET("/api/expert/issues/")
     Call<List<PendingIssueResponse>> pendingIssuesList();
 
     @POST("/api/expert/reject-issue/")

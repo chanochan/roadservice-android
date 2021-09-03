@@ -3,14 +3,16 @@ package com.example.roadservice.backend.io.citizen;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
+
 public class AddIssueRequest {
     @SerializedName("lat")
     @Expose
-    public double latitude;
+    public String latitude;
 
     @SerializedName("long")
     @Expose
-    public double longitude;
+    public String longitude;
 
     @SerializedName("county")
     @Expose
@@ -27,8 +29,8 @@ public class AddIssueRequest {
     // TODO image
 
     public AddIssueRequest(String title, String description, int countyId, double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = String.format(Locale.getDefault(), "%06f", latitude);
+        this.longitude = String.format(Locale.getDefault(), "%06f", longitude);
         this.countyId = countyId;
         this.title = title;
         this.description = description;

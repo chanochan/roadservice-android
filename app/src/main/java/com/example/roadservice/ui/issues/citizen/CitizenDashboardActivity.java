@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import androidx.fragment.app.Fragment;
@@ -89,17 +90,17 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
                 return;
             if (msg.arg1 == CurrentIssueResponse.CODE) {
                 CurrentIssueResponse resp = (CurrentIssueResponse) msg.obj;
-                target.gotoCurrentIssue(Database.getIssue());
+//                target.gotoCurrentIssue(Database.getIssue());
                 if (resp == null)
                     return;
-//                Issue issue = resp.toIssue();
-//                Log.d("SHIT", resp.state);
-//                if (resp.state.equals("SC") || resp.state.equals("RJ"))
-//                    target.gotoAddIssue();
-//                else if (resp.state.equals("DO"))
-//                    target.gotoRateIssue(issue);
-//                else
-//                    target.gotoCurrentIssue(issue);
+                Issue issue = resp.toIssue();
+                Log.d("SHIT", resp.state);
+                if (resp.state.equals("SC") || resp.state.equals("RJ") || resp.state.equals("FL"))
+                    target.gotoAddIssue();
+                else if (resp.state.equals("DO"))
+                    target.gotoRateIssue(issue);
+                else
+                    target.gotoCurrentIssue(issue);
             }
         }
     }

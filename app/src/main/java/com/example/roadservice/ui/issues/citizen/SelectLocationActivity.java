@@ -60,6 +60,7 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("انتخاب مکان");
 
 // Mapbox access token is configured here. This needs to be called either in your application
 // object or in the same activity which contains the mapview.
@@ -113,7 +114,7 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
                             returnLocation(mapTargetLatLng);
 
 // Hide the hovering red hovering ImageView marker
-                            hoveringMarker.setVisibility(View.INVISIBLE);
+                            hoveringMarker.setVisibility(View.GONE);
 
 // Transform the appearance of the button to become the cancel button
                             selectLocationButton.setBackgroundColor(
@@ -122,7 +123,6 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
                                             R.color.colorAccent
                                     )
                             );
-                            selectLocationButton.setText(getString(R.string.location_picker_select_location_button_cancel));
 
 // Show the SymbolLayer icon to represent the selected map location
                             if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {

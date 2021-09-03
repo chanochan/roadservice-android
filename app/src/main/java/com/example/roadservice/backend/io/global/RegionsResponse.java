@@ -1,4 +1,4 @@
-package com.example.roadservice.backend.io;
+package com.example.roadservice.backend.io.global;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

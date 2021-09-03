@@ -1,5 +1,7 @@
 package com.example.roadservice.models;
 
+import org.jetbrains.annotations.NotNull;
+
 public class GeoLocation {
     public static GeoLocation ORIGIN = new GeoLocation(0, 0);
     private final double latitude;
@@ -25,5 +27,14 @@ public class GeoLocation {
         GeoLocation that = (GeoLocation) o;
         return Double.compare(that.latitude, latitude) == 0 &&
                 Double.compare(that.longitude, longitude) == 0;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return "GeoLocation{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 }

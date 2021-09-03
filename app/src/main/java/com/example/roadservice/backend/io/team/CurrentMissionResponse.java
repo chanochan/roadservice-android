@@ -10,7 +10,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CurrentMissionResponse {
     public static final int CODE = 400;
@@ -33,7 +35,7 @@ public class CurrentMissionResponse {
 
     @SerializedName("service_teams")
     @Expose
-    public List<CurrentMissionSkill> skills;
+    public List<CurrentMissionTeam> teams;
 
     public Issue getIssue() {
         return issue.toIssue();
@@ -47,12 +49,20 @@ public class CurrentMissionResponse {
                     machine.count
             ));
 
+        HashMap<Integer, Integer> skillsCount = new HashMap<>();
+        for (CurrentMissionTeam team : teams) {
+            Integer currentCount = skillsCount.get(team.skillId);
+            if (currentCount == null)
+                currentCount = 0;
+            skillsCount.put(team.skillId, currentCount + 1);
+        }
         ArrayList<ItemCounter> modelSkills = new ArrayList<>();
-        for (CurrentMissionSkill skill : skills)
+        for (Map.Entry<Integer, Integer> skill : skillsCount.entrySet()) {
             modelSkills.add(new ItemCounter(
-                    Database.getSkill(skill.id),
-                    skill.count
+                    Database.getSkill(skill.getKey()),
+                    skill.getValue()
             ));
+        }
 
         MissionType missionType = Database.getMissionType(missionTypeId);
         return new Mission(
@@ -101,7 +111,7 @@ public class CurrentMissionResponse {
     }
 
     public static class CurrentMissionMachine {
-        @SerializedName("id")
+        @SerializedName("machinery_type")
         @Expose
         public int id;
 
@@ -110,13 +120,9 @@ public class CurrentMissionResponse {
         public int count;
     }
 
-    public static class CurrentMissionSkill {
-        @SerializedName("id")
+    public static class CurrentMissionTeam {
+        @SerializedName("speciality")
         @Expose
-        public int id;
-
-        @SerializedName("amount")
-        @Expose
-        public int count;
+        public int skillId;
     }
 }
