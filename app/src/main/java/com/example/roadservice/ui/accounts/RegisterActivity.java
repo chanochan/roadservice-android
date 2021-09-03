@@ -6,11 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.RegisterRequest;
@@ -18,6 +15,7 @@ import com.example.roadservice.backend.io.accounts.RegisterResponse;
 import com.example.roadservice.backend.threads.accounts.RegisterThread;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.accounts.structs.RegisterData;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -54,12 +52,17 @@ public class RegisterActivity extends RSAppCompatActivity {
     }
 
     private void success() {
-        // TODO show success message
+        Toast.makeText(
+                this,
+                getString(R.string.register_success_message),
+                Toast.LENGTH_LONG
+        ).show();
         startLogin();
     }
 
     private void register() {
         RegisterData data = collectData();
+        if (data == null) return;
         RegisterRequest reqData = new RegisterRequest(
                 data.firstName,
                 data.lastName,
@@ -73,15 +76,70 @@ public class RegisterActivity extends RSAppCompatActivity {
 
     private RegisterData collectData() {
         RegisterData data = new RegisterData();
-        EditText tmp = findViewById(R.id.phoneNumberText);
-        data.phoneNumber = tmp.getText().toString();
+        TextInputLayout tmp;
+        String error;
+        boolean isValid = true;
+
+        tmp = findViewById(R.id.phoneNumberText);
+        data.phoneNumber = tmp.getEditText().getText().toString();
+        error = getPhoneError(data.phoneNumber);
+        isValid &= setError(tmp, error);
+
         tmp = findViewById(R.id.passwordText);
-        data.password = tmp.getText().toString();
+        data.password = tmp.getEditText().getText().toString();
+        error = getPasswordError(data.password);
+        isValid &= setError(tmp, error);
+
         tmp = findViewById(R.id.firstNameText);
-        data.firstName = tmp.getText().toString();
+        data.firstName = tmp.getEditText().getText().toString();
+        error = getFirstNameError(data.firstName);
+        isValid &= setError(tmp, error);
+
         tmp = findViewById(R.id.lastNameText);
-        data.lastName = tmp.getText().toString();
+        data.lastName = tmp.getEditText().getText().toString();
+        error = getLastNameError(data.lastName);
+        isValid &= setError(tmp, error);
+
+        if (!isValid)
+            return null;
         return data;
+    }
+
+    private boolean setError(TextInputLayout tmp, String error) {
+        if (error == null) {
+            tmp.setErrorEnabled(false);
+            return true;
+        }
+        tmp.setError(error);
+        return false;
+    }
+
+    private String getPhoneError(String phoneNumber) {
+        if (phoneNumber.length() == 0)
+            return getString(R.string.error_required);
+        if (phoneNumber.length() != 11 || !phoneNumber.startsWith("09"))
+            return getString(R.string.login_error_phone_length);
+        return null;
+    }
+
+    private String getPasswordError(String password) {
+        if (password.length() == 0)
+            return getString(R.string.error_required);
+        if (password.length() < 6)
+            return getString(R.string.error_password_short);
+        return null;
+    }
+
+    private String getFirstNameError(String firstName) {
+        if (firstName.length() == 0)
+            return getString(R.string.error_required);
+        return null;
+    }
+
+    private String getLastNameError(String lastName) {
+        if (lastName.length() == 0)
+            return getString(R.string.error_required);
+        return null;
     }
 
     private static class RegisterHandler extends Handler {

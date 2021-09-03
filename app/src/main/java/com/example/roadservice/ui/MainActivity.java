@@ -128,7 +128,8 @@ public class MainActivity extends RSAppCompatActivity {
         this.badNetwork = true;
         Toast toast = Toast.makeText(this, getString(R.string.network_error), Toast.LENGTH_SHORT);
         toast.show();
-        findViewById(R.id.mainRefreshLayout).setVisibility(View.VISIBLE);
+        if (pendingRequests == 0)
+            findViewById(R.id.mainRefreshLayout).setVisibility(View.VISIBLE);
     }
 
     private static class MainHandler extends Handler {
