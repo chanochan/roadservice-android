@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.team.CurrentMissionResponse;
@@ -15,8 +16,11 @@ import com.example.roadservice.models.Mission;
 import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.uitls.BooleanContainer;
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -58,6 +62,34 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
                 }
             }
         }).start();
+
+        checkLocationPermission();
+    }
+
+    private void checkLocationPermission() {
+        if (!PermissionsManager.areLocationPermissionsGranted(this)) {
+            PermissionsManager permissionsManager = new PermissionsManager(new PermissionsListener() {
+                @Override
+                public void onExplanationNeeded(List<String> permissionsToExplain) {
+                    Toast.makeText(
+                            TeamDashboardActivity.this,
+                            R.string.user_location_permission_explanation,
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+
+                @Override
+                public void onPermissionResult(boolean granted) {
+                    if (!granted)
+                        Toast.makeText(
+                                TeamDashboardActivity.this,
+                                R.string.warn_future_behavior,
+                                Toast.LENGTH_LONG
+                        ).show();
+                }
+            });
+            permissionsManager.requestLocationPermissions(this);
+        }
     }
 
     public void updateData() {

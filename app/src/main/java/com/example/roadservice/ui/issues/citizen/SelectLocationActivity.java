@@ -236,20 +236,15 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
 
     @SuppressWarnings({"MissingPermission"})
     private void enableLocationPlugin(@NonNull Style loadedMapStyle) {
-// Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
-// Get an instance of the component. Adding in LocationComponentOptions is also an optional
-// parameter
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
             locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(
                     this, loadedMapStyle).build());
             locationComponent.setLocationComponentEnabled(true);
 
-// Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
             locationComponent.setRenderMode(RenderMode.NORMAL);
-
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);

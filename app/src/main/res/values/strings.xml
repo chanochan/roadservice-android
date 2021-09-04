@@ -84,4 +84,5 @@
     <string name="error_password_short">رمز عبور باید شامل حداقل ۶ کاراکتر باشد.</string>
     <string name="got_new_mission">ماموریت جدیدی به شما محوّل شده است.</string>
     <string name="got_new_issue">مشکل جدیدی گزارش شده است.</string>
+    <string name="warn_future_behavior">هشدار: رفتار برنامه در ادامه دچار اختلال خواهد شد.</string>
 </resources>
