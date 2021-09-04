@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.roadservice.R;
+import com.example.roadservice.RSDaemonService;
 import com.example.roadservice.backend.io.accounts.ProfileRequest;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
 import com.example.roadservice.backend.threads.accounts.ProfileThread;
@@ -48,8 +49,8 @@ public class MainActivity extends RSAppCompatActivity {
 
         progressIndicator = findViewById(R.id.mainProgressIndicator);
         buttonsLayout = findViewById(R.id.mainButtonsLayout);
-//        Intent intent = new Intent(this, SendLocationService.class);
-//        startService(intent);
+        Intent intent = new Intent(this, RSDaemonService.class);
+        startService(intent);
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 4, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()

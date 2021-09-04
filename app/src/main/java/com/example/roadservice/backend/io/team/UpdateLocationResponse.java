@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class UpdateLocationResponse {
     @SerializedName("status")
     @Expose
-    private String status;
+    private boolean status;
 
-    public String getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 }

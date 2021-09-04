@@ -83,14 +83,10 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
             public void onStyleLoaded(@NonNull final Style style) {
                 enableLocationPlugin(style);
 
-// Toast instructing user to tap on the mapboxMap
                 Toast.makeText(
                         SelectLocationActivity.this,
                         getString(R.string.move_map_instruction), Toast.LENGTH_SHORT).show();
 
-// When user is still picking a location, we hover a marker above the mapboxMap in the center.
-// This is done by using an image view with the default marker found in the SDK. You can
-// swap out for your own marker image, just make sure it matches up with the dropped marker.
                 hoveringMarker = new ImageView(SelectLocationActivity.this);
                 hoveringMarker.setImageResource(R.drawable.red_pin);
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -99,24 +95,19 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
                 hoveringMarker.setLayoutParams(params);
                 mapView.addView(hoveringMarker);
 
-// Initialize, but don't show, a SymbolLayer for the marker icon which will represent a selected location.
                 initDroppedMarker(style);
 
-// Button for user to drop marker or to pick marker back up.
                 selectLocationButton = findViewById(R.id.select_location_button);
                 selectLocationButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (hoveringMarker.getVisibility() == View.VISIBLE) {
 
-// Use the map target's coordinates to make a reverse geocoding search
                             final LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
                             returnLocation(mapTargetLatLng);
 
-// Hide the hovering red hovering ImageView marker
                             hoveringMarker.setVisibility(View.GONE);
 
-// Transform the appearance of the button to become the cancel button
                             selectLocationButton.setBackgroundColor(
                                     ContextCompat.getColor(
                                             SelectLocationActivity.this,
@@ -124,7 +115,6 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
                                     )
                             );
 
-// Show the SymbolLayer icon to represent the selected map location
                             if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
                                 GeoJsonSource source = style.getSourceAs("dropped-marker-source-id");
                                 if (source != null) {
@@ -137,15 +127,12 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
                             }
                         } else {
 
-// Switch the button appearance back to select a location.
                             selectLocationButton.setBackgroundColor(
                                     ContextCompat.getColor(SelectLocationActivity.this, R.color.colorPrimary));
                             selectLocationButton.setText(getString(R.string.location_picker_select_location_button_select));
 
-// Show the red hovering ImageView marker
                             hoveringMarker.setVisibility(View.VISIBLE);
 
-// Hide the selected location SymbolLayer
                             droppedMarkerLayer = style.getLayer(DROPPED_MARKER_LAYER_ID);
                             if (droppedMarkerLayer != null) {
                                 droppedMarkerLayer.setProperties(visibility(NONE));

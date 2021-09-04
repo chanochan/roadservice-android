@@ -121,28 +121,45 @@ public class Database {
 
     public static void setProfile(Profile profile) {
         Database.profile = profile;
+        Database.setRole(profile.getRole());
     }
 
     public static void setToken(String token) {
+        setCustom("AUTH", token);
+    }
+
+    public static String getToken(String defValue) {
+        return getCustom("AUTH", defValue);
+    }
+
+    public static void setRole(String role) {
+        setCustom("ROLE", role);
+    }
+
+    public static String getRole(String defValue) {
+        return getCustom("ROLE", defValue);
+    }
+
+    public static void setCustom(String key, String value) {
         Context ctx = RoadServiceApplication.getAppContext();
         SharedPreferences sp = ctx.getSharedPreferences(
                 ctx.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE
         );
         SharedPreferences.Editor editor = sp.edit();
-        if (token == null)
-            editor.remove("AUTH");
+        if (value == null)
+            editor.remove(key);
         else
-            editor.putString("AUTH", token);
+            editor.putString(key, value);
         editor.apply();
     }
 
-    public static String getToken(String defValue) {
+    public static String getCustom(String key, String defValue) {
         Context ctx = RoadServiceApplication.getAppContext();
         SharedPreferences sp = ctx.getSharedPreferences(
                 ctx.getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE
         );
-        return sp.getString("AUTH", defValue);
+        return sp.getString(key, defValue);
     }
 }

@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.roadservice">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -38,7 +39,7 @@
         </activity>
 
         <service
-            android:name=".SendLocationService"
+            android:name=".RSDaemonService"
             android:enabled="true"
             android:exported="true" />
     </application>
