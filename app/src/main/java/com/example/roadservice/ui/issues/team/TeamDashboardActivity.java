@@ -14,6 +14,7 @@ import com.example.roadservice.models.Issue;
 import com.example.roadservice.models.Mission;
 import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.RSAppCompatActivity;
+import com.example.roadservice.uitls.BooleanContainer;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,6 +22,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TeamDashboardActivity extends RSAppCompatActivity {
+    private final BooleanContainer runBackgroundThread = new BooleanContainer(true);
     private TeamDashboardHandler handler;
     private ThreadPoolExecutor executor;
     private TeamMissionFragment missionFragment;
@@ -46,7 +48,16 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         );
         handler = new TeamDashboardHandler(Looper.getMainLooper(), this);
 
-        updateData();
+        new Thread(() -> {
+            while (runBackgroundThread.get()) {
+                updateData();
+                try {
+                    Thread.sleep(15 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void updateData() {
@@ -63,6 +74,12 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
             findViewById(R.id.teamDashboardFragment).setVisibility(View.GONE);
             findViewById(R.id.missionDoneLayout).setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        runBackgroundThread.reset();
+        super.onDestroy();
     }
 
     private static class TeamDashboardHandler extends Handler {

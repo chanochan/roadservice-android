@@ -11,6 +11,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.roadservice.R;
+import com.example.roadservice.RSDaemonService;
 import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Profile;
 import com.example.roadservice.ui.accounts.ChangePasswordActivity;
@@ -67,6 +68,8 @@ public class RSAppCompatActivity extends AppCompatActivity {
                 dest = ChangePasswordActivity.class;
             } else if (item.getItemId() == R.id.logoutNavigationItem) {
                 Database.setToken(null);
+                Database.setRole(null);
+                Database.setCustom(RSDaemonService.SP_KEY, null);
                 dest = MainActivity.class;
             } else
                 dest = this.getClass();

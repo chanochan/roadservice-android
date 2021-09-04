@@ -43,7 +43,7 @@ import java.util.concurrent.ExecutionException;
 public class RSDaemonService extends Service {
     private static final String TAG = "RSDaemonService";
     private static final String NOTIFICATION_CHANNEL_ID = "RSDaemon";
-    private static final String SP_KEY = "RSDaemon";
+    public static final String SP_KEY = "RSDaemon";
     private Runnable senderThread;
     private boolean isRunning;
     private Handler handler;

@@ -1,12 +1,10 @@
 package com.example.roadservice.ui.issues.citizen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
 
 import androidx.fragment.app.Fragment;
 
@@ -14,10 +12,9 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.citizen.CurrentIssueRequest;
 import com.example.roadservice.backend.io.citizen.CurrentIssueResponse;
 import com.example.roadservice.backend.threads.citizen.CurrentIssueThread;
-import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.RSAppCompatActivity;
-import com.example.roadservice.ui.accounts.ChangePasswordActivity;
+import com.example.roadservice.uitls.BooleanContainer;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -25,8 +22,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CitizenDashboardActivity extends RSAppCompatActivity {
+    private final BooleanContainer runBackgroundThread = new BooleanContainer(true);
     private CitizenDashboardHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
+    private int currentPage = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +39,27 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
 
-        CurrentIssueThread thread = new CurrentIssueThread(handler, new CurrentIssueRequest());
-        threadPoolExecutor.execute(thread);
+        new Thread(() -> {
+            while (runBackgroundThread.get()) {
+                if (currentPage == 1) {
+                    CurrentIssueThread thread = new CurrentIssueThread(
+                            handler,
+                            new CurrentIssueRequest()
+                    );
+                    threadPoolExecutor.execute(thread);
+                }
+                try {
+                    Thread.sleep(15 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void gotoAddIssue() {
+        if (currentPage == 0) return;
+        currentPage = 0;
         setTitle("ثبت مشکل جدید");
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
@@ -53,6 +68,8 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
     }
 
     public void gotoCurrentIssue(Issue issue) {
+        if (currentPage == 1) return;
+        currentPage = 1;
         setTitle("مشکل در دست بررسی");
         Fragment fragment = CurrentIssueFragment.newInstance(issue);
         getSupportFragmentManager()
@@ -62,6 +79,8 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
     }
 
     public void gotoRateIssue(Issue issue) {
+        if (currentPage == 2) return;
+        currentPage = 2;
         setTitle("ارزیابی عملکرد");
         Fragment fragment = RateIssueFragment.newInstance(issue);
         getSupportFragmentManager()
@@ -70,9 +89,10 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
                 .commit();
     }
 
-    public void gotoChangePassword(View view) {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        startActivity(intent);
+    @Override
+    protected void onDestroy() {
+        runBackgroundThread.reset();
+        super.onDestroy();
     }
 
     private static class CitizenDashboardHandler extends Handler {

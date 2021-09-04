@@ -16,6 +16,7 @@ import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.issues.specialist.adapters.PendingIssueAdapter;
+import com.example.roadservice.uitls.BooleanContainer;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class SpecialistDashboardActivity extends RSAppCompatActivity {
     private RecyclerView recyclerView;
     private SpecialistDashboardHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
+    private final BooleanContainer runBackgroundThread = new BooleanContainer(true);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +51,19 @@ public class SpecialistDashboardActivity extends RSAppCompatActivity {
         );
         handler = new SpecialistDashboardHandler(Looper.getMainLooper(), this);
 
-        updateDataSet();
+        new Thread(() -> {
+            while (runBackgroundThread.get()) {
+                updateDataSet();
+                try {
+                    Thread.sleep(15 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     private void updateDataSet() {
-//        Collections.addAll(this.issues, SampleData.ISSUES_LIST);
-//        recyclerView.getAdapter().notifyDataSetChanged();
         PendingIssuesListThread thread = new PendingIssuesListThread(handler, null);
         threadPoolExecutor.execute(thread);
     }
@@ -64,6 +73,12 @@ public class SpecialistDashboardActivity extends RSAppCompatActivity {
         Intent intent = new Intent(this, IssueDetailsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        runBackgroundThread.reset();
+        super.onDestroy();
     }
 
     private static class SpecialistDashboardHandler extends Handler {
