@@ -11,7 +11,6 @@ import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.ChangePasswordRequest;
 import com.example.roadservice.backend.io.accounts.ChangePasswordResponse;
 import com.example.roadservice.backend.threads.accounts.ChangePasswordThread;
-import com.example.roadservice.ui.MainActivity;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -51,19 +50,52 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
         oldPassword = oldLayout.getEditText().getText().toString();
         newPassword = newLayout.getEditText().getText().toString();
         repeatPassword = repeatLayout.getEditText().getText().toString();
+
+        boolean isValid = true;
+
+        String error = getPasswordError(newPassword, oldPassword);
+        if (error != null) {
+            newLayout.setError(error);
+            isValid = false;
+        } else
+            newLayout.setErrorEnabled(false);
+
         if (!newPassword.equals(repeatPassword)) {
-            repeatLayout.setError("عبارات وارد شده مطابقت ندارند");
+            repeatLayout.setError(getString(R.string.error_password_mismatch));
+            isValid = false;
+        } else
+            repeatLayout.setErrorEnabled(false);
+
+        if (!isValid)
             return;
-        }
+
+        oldLayout.setErrorEnabled(false);
+
         ChangePasswordRequest req = new ChangePasswordRequest(oldPassword, newPassword);
         ChangePasswordThread thread = new ChangePasswordThread(handler, req);
         executor.execute(thread);
     }
 
+    private String getPasswordError(String newPassword, String oldPassword) {
+        if (newPassword.length() == 0)
+            return getString(R.string.error_required);
+        if (newPassword.length() < 6)
+            return getString(R.string.error_password_short);
+        if (oldPassword.equals(newPassword))
+            return getString(R.string.error_password_match);
+        return null;
+    }
+
     private void onDone() {
+        oldLayout.setErrorEnabled(false);
+
         Intent intent = new Intent(this, getDashboardClass());
         startActivity(intent);
         finish();
+    }
+
+    private void onFailure() {
+        oldLayout.setError(getString(R.string.error_password_wrong));
     }
 
     private static class ChangePasswordHandler extends Handler {
@@ -81,7 +113,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
             if (target == null)
                 return;
             if (msg.arg1 == ChangePasswordResponse.CODE) {
-                // TODO handle errors
+                // TODO wrong password match
                 ChangePasswordResponse resp = (ChangePasswordResponse) msg.obj;
                 if (resp == null) {
                     Log.d(TAG, "Empty response");
@@ -90,7 +122,8 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
                 if (resp.status) {
                     target.onDone();
                     return;
-                }
+                } else
+                    target.onFailure();
                 Log.d(TAG, "False status");
             }
         }

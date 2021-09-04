@@ -1,6 +1,5 @@
 package com.example.roadservice.ui.issues.citizen;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -61,7 +61,12 @@ public class RateIssueFragment extends Fragment {
 
     private void submit() {
         RatingBar ratingBar = this.getView().findViewById(R.id.issueRatingBar);
-        RateIssueRequest request = new RateIssueRequest((int) ratingBar.getRating());
+        int rating = (int) ratingBar.getRating();
+        if (rating == 0) {
+            Toast.makeText(getContext(), getString(R.string.error_rating), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        RateIssueRequest request = new RateIssueRequest(rating);
         RateIssueThread thread = new RateIssueThread(handler, request);
         threadPoolExecutor.execute(thread);
     }

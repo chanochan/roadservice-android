@@ -85,4 +85,8 @@
     <string name="got_new_mission">ماموریت جدیدی به شما محوّل شده است.</string>
     <string name="got_new_issue">مشکل جدیدی گزارش شده است.</string>
     <string name="warn_future_behavior">هشدار: رفتار برنامه در ادامه دچار اختلال خواهد شد.</string>
+    <string name="error_password_match">رمز عبور جدید و قدیمی نباید یکسان باشند.</string>
+    <string name="error_password_mismatch">رمز عبورهای وارد شده مطابقت ندارند.</string>
+    <string name="error_password_wrong">رمز عبور وارد شده اشتباه است.</string>
+    <string name="error_rating">حداقل یک ستاره را انتخاب کنید.</string>
 </resources>
