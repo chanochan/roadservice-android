@@ -89,4 +89,5 @@
     <string name="error_password_mismatch">رمز عبورهای وارد شده مطابقت ندارند.</string>
     <string name="error_password_wrong">رمز عبور وارد شده اشتباه است.</string>
     <string name="error_rating">حداقل یک ستاره را انتخاب کنید.</string>
+    <string name="error_issue_empty_title">عنوان مشکل را وارد کنید.</string>
 </resources>

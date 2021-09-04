@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +34,7 @@ import com.example.roadservice.models.GeoLocation;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.models.Province;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -186,17 +186,30 @@ public class AddIssueFragment extends Fragment {
         countySpinner.setSelection(0);
     }
 
-    private void collectData() {
+    private boolean collectData() {
         View view = getView();
         assert view != null;
-        EditText tmp = view.findViewById(R.id.titleText);
-        issue.setTitle(tmp.getText().toString());
-        tmp = view.findViewById(R.id.descriptionText);
-        issue.setDescription(tmp.getText().toString());
+        TextInputLayout titleLayout = view.findViewById(R.id.titleTextHolder);
+        issue.setTitle(titleLayout.getEditText().getText().toString());
+        TextInputLayout descriptionLayout = view.findViewById(R.id.descriptionText);
+        issue.setDescription(descriptionLayout.getEditText().getText().toString());
+
+        boolean isValid = true;
+        if (issue.getLocation().equals(GeoLocation.ORIGIN))
+            isValid = false;
+        if (issue.getTitle().length() == 0) {
+            titleLayout.setError(getString(R.string.error_issue_empty_title));
+            isValid = false;
+        } else
+            titleLayout.setErrorEnabled(false);
+
+        if (isValid)
+            return true;
+        return false;
     }
 
     private void submit() {
-        collectData();
+        if (!collectData()) return;
         AddIssueRequest request = new AddIssueRequest(
                 issue.getTitle(),
                 issue.getDescription(),
@@ -209,10 +222,13 @@ public class AddIssueFragment extends Fragment {
     }
 
     private void updateInterface() {
-        if (issue.getLocation().equals(GeoLocation.ORIGIN))
+        if (issue.getLocation().equals(GeoLocation.ORIGIN)) {
             locationView.setText(R.string.not_chosen);
-        else
+            locationView.setTextColor(getResources().getColor(R.color.fail));
+        } else {
             locationView.setText(R.string.chosen);
+            locationView.setTextColor(getResources().getColor(R.color.success));
+        }
         if (issue.getImageAddress() != null)
             Glide.with(this).load(issue.getImageAddress()).into(imageView);
     }
