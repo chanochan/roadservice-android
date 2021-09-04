@@ -1,5 +1,7 @@
 package com.example.roadservice.backend;
 
+import com.example.roadservice.backend.io.accounts.ChangePasswordRequest;
+import com.example.roadservice.backend.io.accounts.ChangePasswordResponse;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.io.accounts.ProfileResponse;
@@ -57,6 +59,9 @@ public interface RoadServiceApiInterface {
 
     @POST("/api/signup/")
     Call<RegisterResponse> register(@Body RegisterRequest data);
+
+    @POST("/api/change-password/")
+    Call<ChangePasswordResponse> changePassword(@Body ChangePasswordRequest reqData);
 
     @GET("/api/citizen/issue/")
     Call<CurrentIssueResponse> currentIssue();

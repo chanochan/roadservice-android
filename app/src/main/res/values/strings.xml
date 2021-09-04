@@ -81,7 +81,7 @@
     <string name="login_error_phone_length">تلفن همراه باید به شکل ۰۹xxxxxxxxx باشد.</string>
     <string name="error_required">پر کردن این مقدار ضروری است.</string>
     <string name="register_success_message">حساب کاربری شما با موفّقیّت ایجاد شد.</string>
-    <string name="error_password_short">رمز عبور باید شامل حداقل ۶ کاراکتر باشد.</string>
+    <string name="error_password_short">رمز عبور باید شامل حداقل ۱۲ کاراکتر باشد.</string>
     <string name="got_new_mission">ماموریت جدیدی به شما محوّل شده است.</string>
     <string name="got_new_issue">مشکل جدیدی گزارش شده است.</string>
     <string name="warn_future_behavior">هشدار: رفتار برنامه در ادامه دچار اختلال خواهد شد.</string>
@@ -93,4 +93,5 @@
     <string name="province">استان</string>
     <string name="county">شهرستان</string>
     <string name="iran">ایران</string>
+    <string name="error_phone_duplicate">این تلفن همراه در سامانه ثبت شده است.</string>
 </resources>

@@ -71,7 +71,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
 
         oldLayout.setErrorEnabled(false);
 
-        ChangePasswordRequest req = new ChangePasswordRequest(oldPassword, newPassword);
+        ChangePasswordRequest req = new ChangePasswordRequest(newPassword);
         ChangePasswordThread thread = new ChangePasswordThread(handler, req);
         executor.execute(thread);
     }
@@ -79,7 +79,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
     private String getPasswordError(String newPassword, String oldPassword) {
         if (newPassword.length() == 0)
             return getString(R.string.error_required);
-        if (newPassword.length() < 6)
+        if (newPassword.length() < 12)
             return getString(R.string.error_password_short);
         if (oldPassword.equals(newPassword))
             return getString(R.string.error_password_match);
@@ -113,7 +113,6 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
             if (target == null)
                 return;
             if (msg.arg1 == ChangePasswordResponse.CODE) {
-                // TODO wrong password match
                 ChangePasswordResponse resp = (ChangePasswordResponse) msg.obj;
                 if (resp == null) {
                     Log.d(TAG, "Empty response");

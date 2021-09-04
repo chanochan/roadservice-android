@@ -51,13 +51,17 @@ public class RegisterActivity extends RSAppCompatActivity {
         finish();
     }
 
-    private void success() {
+    private void onSuccess() {
         Toast.makeText(
                 this,
                 getString(R.string.register_success_message),
                 Toast.LENGTH_LONG
         ).show();
         startLogin();
+    }
+
+    private void onFailure() {
+        setError(findViewById(R.id.phoneNumberText), getString(R.string.error_phone_duplicate));
     }
 
     private void register() {
@@ -125,7 +129,7 @@ public class RegisterActivity extends RSAppCompatActivity {
     private String getPasswordError(String password) {
         if (password.length() == 0)
             return getString(R.string.error_required);
-        if (password.length() < 6)
+        if (password.length() < 12)
             return getString(R.string.error_password_short);
         return null;
     }
@@ -159,11 +163,10 @@ public class RegisterActivity extends RSAppCompatActivity {
             if (msg.arg1 == RegisterResponse.CODE) {
                 Log.d("SHIT", "Received msg");
                 RegisterResponse resp = (RegisterResponse) msg.obj;
-                if (!resp.status) {
-                    // TODO show errors
-                    return;
-                }
-                target.success();
+                if (resp.status)
+                    target.onSuccess();
+                else
+                    target.onFailure();
             }
         }
     }

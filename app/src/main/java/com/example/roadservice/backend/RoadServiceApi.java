@@ -1,5 +1,7 @@
 package com.example.roadservice.backend;
 
+import com.example.roadservice.backend.io.accounts.ChangePasswordRequest;
+import com.example.roadservice.backend.io.accounts.ChangePasswordResponse;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.io.accounts.ProfileRequest;
@@ -142,6 +144,12 @@ public class RoadServiceApi {
     public EndMissionResponse endMission(EndMissionRequest reqData) throws IOException {
         Call<EndMissionResponse> call = api.endMission(reqData);
         Response<EndMissionResponse> response = call.execute();
+        return response.body();
+    }
+
+    public ChangePasswordResponse changePassword(ChangePasswordRequest reqData) throws IOException {
+        Call<ChangePasswordResponse> call = api.changePassword(reqData);
+        Response<ChangePasswordResponse> response = call.execute();
         return response.body();
     }
 }
