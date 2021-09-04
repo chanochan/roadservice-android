@@ -17,8 +17,6 @@ public class TeamMissionFragment extends Fragment {
     private Issue issue;
     private Mission mission;
 
-    private CurrentIssueFragment currentIssueFragment;
-    private CurrentMissionFragment currentMissionFragment;
     private EndMissionFragment endMissionFragment;
 
     public TeamMissionFragment() {
@@ -35,9 +33,6 @@ public class TeamMissionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        currentIssueFragment = CurrentIssueFragment.newInstance(issue);
-        currentMissionFragment = CurrentMissionFragment.newInstance(mission);
         endMissionFragment = EndMissionFragment.newInstance();
     }
 
@@ -51,11 +46,13 @@ public class TeamMissionFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    CurrentIssueFragment currentIssueFragment = CurrentIssueFragment.newInstance(issue);
                     getParentFragmentManager()
                             .beginTransaction()
                             .replace(R.id.teamTabsFragment, currentIssueFragment)
                             .commit();
                 } else if (tab.getPosition() == 1) {
+                    CurrentMissionFragment currentMissionFragment = CurrentMissionFragment.newInstance(mission);
                     getParentFragmentManager()
                             .beginTransaction()
                             .replace(R.id.teamTabsFragment, currentMissionFragment)
@@ -70,7 +67,6 @@ public class TeamMissionFragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
@@ -78,18 +74,17 @@ public class TeamMissionFragment extends Fragment {
 
             }
         });
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.teamTabsFragment, currentIssueFragment)
-                .commit();
+//        getParentFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.teamTabsFragment, currentIssueFragment)
+//                .commit();
+        tabLayout.selectTab(tabLayout.getTabAt(0));
 
         return view;
     }
 
     public void setData(Issue issue, Mission mission) {
         this.issue = issue;
-        currentIssueFragment.setData(issue);
         this.mission = mission;
-        currentMissionFragment.setData(mission);
     }
 }

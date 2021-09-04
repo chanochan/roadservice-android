@@ -65,6 +65,8 @@ public class CurrentMissionFragment extends Fragment {
     }
 
     private void showData() {
+        if (mission == null) return;
+
         if (missionTypeText != null)
             missionTypeText.setText(mission.getType().getName());
 

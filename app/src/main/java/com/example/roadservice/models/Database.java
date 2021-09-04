@@ -162,4 +162,18 @@ public class Database {
         );
         return sp.getString(key, defValue);
     }
+
+    public static County getCounty(int id) {
+        for (County county : getCounties())
+            if (county.getId() == id)
+                return county;
+        return null;
+    }
+
+    public static Province getProvince(int id) {
+        for (Province province : getProvinces())
+            if (province.getId() == id)
+                return province;
+        return null;
+    }
 }

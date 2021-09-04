@@ -1,12 +1,7 @@
 package com.example.roadservice.backend.io.team;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.roadservice.backend.io.basics.StatusResponse;
 
-public class EndMissionResponse {
+public class EndMissionResponse extends StatusResponse {
     public static final int CODE = 402;
-
-    @SerializedName("status")
-    @Expose
-    public boolean status;
 }

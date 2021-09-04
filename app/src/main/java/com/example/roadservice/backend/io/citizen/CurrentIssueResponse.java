@@ -1,47 +1,7 @@
 package com.example.roadservice.backend.io.citizen;
 
-import com.example.roadservice.models.GeoLocation;
-import com.example.roadservice.models.Issue;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.roadservice.backend.io.basics.IssueSerializer;
 
-public class CurrentIssueResponse {
+public class CurrentIssueResponse extends IssueSerializer {
     public static final int CODE = 200;
-
-    @SerializedName("id")
-    @Expose
-    public int id;
-
-    @SerializedName("state")
-    @Expose
-    public String state;
-
-    @SerializedName("lat")
-    @Expose
-    public double latitude;
-
-    @SerializedName("long")
-    @Expose
-    public double longitude;
-
-    @SerializedName("title")
-    @Expose
-    public String title;
-
-    @SerializedName("description")
-    @Expose
-    public String description;
-
-    public Issue toIssue() {
-        // TODO Image address
-        // TODO county code
-        return new Issue(
-                id,
-                new GeoLocation(latitude, longitude),
-                title,
-                description,
-                null,
-                0
-        );
-    }
 }

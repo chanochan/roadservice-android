@@ -1,5 +1,6 @@
 package com.example.roadservice.backend.io.team;
 
+import com.example.roadservice.backend.io.basics.IssueSerializer;
 import com.example.roadservice.models.Database;
 import com.example.roadservice.models.GeoLocation;
 import com.example.roadservice.models.Issue;
@@ -23,7 +24,7 @@ public class CurrentMissionResponse {
 
     @SerializedName("issue")
     @Expose
-    public CurrentMissionIssue issue;
+    public IssueSerializer issue;
 
     @SerializedName("type")
     @Expose
@@ -71,43 +72,6 @@ public class CurrentMissionResponse {
                 missionType,
                 this.issue.id
         );
-    }
-
-    public static class CurrentMissionIssue {
-        @SerializedName("id")
-        @Expose
-        public int id;
-
-        @SerializedName("lat")
-        @Expose
-        public double latitude;
-
-        @SerializedName("long")
-        @Expose
-        public double longitude;
-
-        @SerializedName("title")
-        @Expose
-        public String title;
-
-        @SerializedName("description")
-        @Expose
-        public String description;
-
-        @SerializedName("county")
-        @Expose
-        public int countyId;
-
-        public Issue toIssue() {
-            return new Issue(
-                    id,
-                    new GeoLocation(latitude, longitude),
-                    title,
-                    description,
-                    null,
-                    countyId
-            );
-        }
     }
 
     public static class CurrentMissionMachine {

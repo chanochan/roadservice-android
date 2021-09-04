@@ -1,7 +1,7 @@
 package com.example.roadservice.backend.io.accounts;
 
-public class ChangePasswordResponse {
-    public static final int CODE = 103;
+import com.example.roadservice.backend.io.basics.StatusResponse;
 
-    public boolean status;
+public class ChangePasswordResponse extends StatusResponse {
+    public static final int CODE = 103;
 }

@@ -9,8 +9,4 @@ public class LoginResponse {
     @SerializedName("token")
     @Expose
     public String token;
-
-    @SerializedName("detail")
-    @Expose
-    public String detail;
 }

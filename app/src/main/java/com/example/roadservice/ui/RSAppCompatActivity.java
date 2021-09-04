@@ -81,10 +81,12 @@ public class RSAppCompatActivity extends AppCompatActivity {
 
         View navigationHeader = navigationView.getHeaderView(0);
         Profile profile = Database.getProfile();
-        TextView nameTextView = navigationHeader.findViewById(R.id.navNameText);
-        nameTextView.setText(profile.getName());
-        TextView phoneTextView = navigationHeader.findViewById(R.id.navPhoneText);
-        phoneTextView.setText(profile.getPhone());
+        if (profile != null) {
+            TextView nameTextView = navigationHeader.findViewById(R.id.navNameText);
+            nameTextView.setText(profile.getName());
+            TextView phoneTextView = navigationHeader.findViewById(R.id.navPhoneText);
+            phoneTextView.setText(profile.getPhone());
+        }
     }
 
     public Class<?> getDashboardClass() {

@@ -15,7 +15,10 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.roadservice.R;
+import com.example.roadservice.models.County;
+import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
+import com.example.roadservice.models.Province;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -38,7 +41,8 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback {
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
-    TextView descriptionTextView, titleTextView;
+    private static final String TAG = "CurrentIssueFragment";
+    TextView descriptionTextView, titleTextView, countyTextView, provinceTextView;
     private Issue issue;
     private MapView mapView;
     private MapboxMap mapboxMap;
@@ -68,6 +72,8 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
         Log.d("SHIT", "Running on create view");
         titleTextView = view.findViewById(R.id.myIssueTitleText);
         descriptionTextView = view.findViewById(R.id.myIssueDescText);
+        provinceTextView = view.findViewById(R.id.provinceTextView);
+        countyTextView = view.findViewById(R.id.countyTextView);
 
         mapView = view.findViewById(R.id.myIssueMapView);
         mapView.onCreate(savedInstanceState);
@@ -84,9 +90,17 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
     }
 
     private void showData() {
+        if (issue == null) return;
         if (titleTextView != null) {
             titleTextView.setText(issue.getTitle());
             descriptionTextView.setText(issue.getDescription());
+
+            Log.d(TAG, Integer.toString(issue.getCounty()));
+            County county = Database.getCounty(issue.getCounty());
+            countyTextView.setText(county.getName());
+
+            Province province = Database.getProvince(county.getProvinceId());
+            provinceTextView.setText(province.getName());
         }
         if (mapboxMap != null) {
             CameraPosition position = new CameraPosition.Builder()
@@ -95,7 +109,7 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
                     .build();
             System.out.println(issue.getLocation().toString());
             mapboxMap.animateCamera(CameraUpdateFactory
-                    .newCameraPosition(position), 1);
+                    .newCameraPosition(position), 2000);
         }
     }
 

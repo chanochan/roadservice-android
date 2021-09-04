@@ -1,4 +1,4 @@
-package com.example.roadservice;
+    package com.example.roadservice;
 
 import android.Manifest;
 import android.app.Notification;
@@ -62,11 +62,16 @@ public class RSDaemonService extends Service {
         );
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.createNotificationChannel(channel);
+        showForegroundNotification(
+                manager,
+                "سامانه‌ی امداد جادّه‌ای",
+                "ساج با قدرت در حال اجراست."
+        );
         senderThread = () -> {
             int x = 0;
             while (true) {
                 Log.i(TAG, "Running sender thread");
-                switch (Database.getRole(null)) {
+                switch (Database.getRole("")) {
                     case "CZ":
                         processCitizen(manager);
                         break;
@@ -108,7 +113,7 @@ public class RSDaemonService extends Service {
                                 location.getLongitude()
                         )
                 );
-                if (resp != null && resp.getStatus())
+                if (resp != null && resp.status)
                     Log.d(TAG, "Location updated");
             } else
                 Log.d(TAG, "Can't access to location");
@@ -169,7 +174,22 @@ public class RSDaemonService extends Service {
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
-        manager.notify(1, notification);
+        manager.notify(2, notification);
+    }
+
+    private void showForegroundNotification(NotificationManager manager, String title, String description) {
+        Intent nIntent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(
+                this, 0, nIntent, 0
+        );
+        Notification notification = (new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID))
+                .setContentTitle(title)
+                .setContentText(description)
+                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
+                .build();
+        startForeground(1, notification);
     }
 
     private GeoLocation getLastLocation() {

@@ -1,12 +1,7 @@
 package com.example.roadservice.backend.io.citizen;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.example.roadservice.backend.io.basics.StatusResponse;
 
-public class RateIssueResponse {
+public class RateIssueResponse extends StatusResponse {
     public static final int CODE = 202;
-
-    @SerializedName("status")
-    @Expose
-    public boolean status;
 }

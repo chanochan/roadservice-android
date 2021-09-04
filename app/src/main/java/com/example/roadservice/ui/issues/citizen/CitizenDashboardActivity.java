@@ -41,7 +41,7 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
 
         new Thread(() -> {
             while (runBackgroundThread.get()) {
-                if (currentPage == 1) {
+                if (currentPage == 1 || currentPage == -1) {
                     CurrentIssueThread thread = new CurrentIssueThread(
                             handler,
                             new CurrentIssueRequest()

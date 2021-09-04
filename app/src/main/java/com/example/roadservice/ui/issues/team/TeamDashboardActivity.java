@@ -13,7 +13,6 @@ import com.example.roadservice.backend.io.team.CurrentMissionResponse;
 import com.example.roadservice.backend.threads.team.CurrentMissionThread;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.models.Mission;
-import com.example.roadservice.models.SampleData;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.uitls.BooleanContainer;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -26,6 +25,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class TeamDashboardActivity extends RSAppCompatActivity {
+    private static final String TAG = "TeamDashboardActivity";
     private final BooleanContainer runBackgroundThread = new BooleanContainer(true);
     private TeamDashboardHandler handler;
     private ThreadPoolExecutor executor;
@@ -40,7 +40,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
         findViewById(R.id.missionDoneLayout).setVisibility(View.GONE);
         findViewById(R.id.teamDashboardFragment).setVisibility(View.GONE);
 
-        missionFragment = TeamMissionFragment.newInstance(SampleData.ISSUE, SampleData.getMission());
+        missionFragment = TeamMissionFragment.newInstance(null, null);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -99,6 +99,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
 
     private void setData(Issue issue, Mission mission) {
         if (issue != null) {
+            Log.d(TAG, "Non null issue");
             missionFragment.setData(issue, mission);
             findViewById(R.id.teamDashboardFragment).setVisibility(View.VISIBLE);
             findViewById(R.id.missionDoneLayout).setVisibility(View.GONE);
@@ -135,6 +136,7 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
                     target.setData(null, null);
                     return;
                 }
+                Log.d("SHIT", "Full response");
                 Log.d("SHIT", "Full response");
                 if (resp.status)
                     target.setData(resp.getIssue(), resp.getMission());

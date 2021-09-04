@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
  * create an instance of this fragment.
  */
 public class AddIssueFragment extends Fragment {
+    private static final String TAG = "AddIssueFragment";
     private Issue issue;
     private ImageView imageView;
     private TextView locationView;
@@ -55,7 +56,7 @@ public class AddIssueFragment extends Fragment {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 Intent data = result.getData();
-                Log.d("SHIT", "Read result");
+                Log.d(TAG, "Read result");
                 if (result.getResultCode() == Activity.RESULT_OK)
                     issue.setImageAddress(data.getDataString());
                 else if (result.getResultCode() == ImagePicker.RESULT_ERROR)
@@ -191,7 +192,7 @@ public class AddIssueFragment extends Fragment {
         assert view != null;
         TextInputLayout titleLayout = view.findViewById(R.id.titleTextHolder);
         issue.setTitle(titleLayout.getEditText().getText().toString());
-        TextInputLayout descriptionLayout = view.findViewById(R.id.descriptionText);
+        TextInputLayout descriptionLayout = view.findViewById(R.id.descriptionTextLayout);
         issue.setDescription(descriptionLayout.getEditText().getText().toString());
 
         boolean isValid = true;
@@ -256,8 +257,7 @@ public class AddIssueFragment extends Fragment {
             if (msg.arg1 != AddIssueResponse.CODE)
                 return;
             AddIssueResponse resp = (AddIssueResponse) msg.obj;
-            // TODO how to know if problem is really saved?
-            if (resp != null && resp.title != null)
+            if (resp != null && resp.status)
                 target.onDone();
         }
     }
