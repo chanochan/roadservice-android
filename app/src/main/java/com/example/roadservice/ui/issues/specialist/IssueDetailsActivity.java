@@ -6,8 +6,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.roadservice.R;
@@ -18,6 +20,7 @@ import com.example.roadservice.models.Database;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.issues.citizen.CurrentIssueFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,6 +39,8 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
         setupNavigationDrawer();
         setTitle("جزییات مشکل");
 
+        setupActionBar();
+
         issue = Database.getIssue();
         Fragment fragment = CurrentIssueFragment.newInstance(issue);
         getSupportFragmentManager()
@@ -43,16 +48,29 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
                 .replace(R.id.issueDetailsFragment, fragment)
                 .commit();
 
-        Button rejectButton = findViewById(R.id.rejectIssueBtn);
-        rejectButton.setOnClickListener(v -> rejectIssue());
-
-        Button acceptButton = findViewById(R.id.acceptIssueBtn);
-        acceptButton.setOnClickListener(v -> acceptIssue());
+//        Button rejectButton = findViewById(R.id.rejectIssueBtn);
+//        rejectButton.setOnClickListener(v -> rejectIssue());
+//
+//        Button acceptButton = findViewById(R.id.acceptIssueBtn);
+//        acceptButton.setOnClickListener(v -> acceptIssue());
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
         handler = new IssueDetailsHandler(Looper.getMainLooper(), this);
+    }
+
+    private void setupActionBar() {
+        MaterialToolbar toolBar = findViewById(R.id.topAppBar);
+        toolBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.acceptIssueHeader)
+                acceptIssue();
+            else if (item.getItemId() == R.id.rejectIssueHeader)
+                rejectIssue();
+            else
+                return false;
+            return true;
+        });
     }
 
     private void rejectIssue() {

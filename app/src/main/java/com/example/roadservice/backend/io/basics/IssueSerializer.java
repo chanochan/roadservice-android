@@ -1,5 +1,6 @@
 package com.example.roadservice.backend.io.basics;
 
+import com.example.roadservice.backend.RetrofitInstance;
 import com.example.roadservice.models.GeoLocation;
 import com.example.roadservice.models.Issue;
 import com.google.gson.annotations.Expose;
@@ -44,7 +45,7 @@ public class IssueSerializer {
                 new GeoLocation(latitude, longitude),
                 title,
                 description,
-                imageUrl,
+                (imageUrl == null ? null : RetrofitInstance.BASE_URL + imageUrl.substring(1)),
                 countyId
         );
     }

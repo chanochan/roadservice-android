@@ -3,10 +3,12 @@ package com.example.roadservice.ui.issues.specialist.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.roadservice.R;
 import com.example.roadservice.models.Issue;
 import com.example.roadservice.ui.issues.specialist.SpecialistDashboardActivity;
@@ -45,13 +47,18 @@ public class PendingIssueAdapter extends RecyclerView.Adapter<PendingIssueAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleText;
+        private final TextView descriptionText;
+        private final ImageView imageView;
         private final PendingIssueAdapter pendingIssueAdapter;
 
         public ViewHolder(View view, List<Issue> localDataSet, PendingIssueAdapter pendingIssueAdapter) {
             super(view);
             this.pendingIssueAdapter = pendingIssueAdapter;
             titleText = (TextView) view.findViewById(R.id.issueTitle);
-            titleText.setOnClickListener(v -> pendingIssueAdapter.target.get().showIssueDetails(getLayoutPosition()));
+            descriptionText = (TextView) view.findViewById(R.id.issueRowDescription);
+            imageView = (ImageView) view.findViewById(R.id.issueRowImage);
+
+            view.setOnClickListener(v -> pendingIssueAdapter.target.get().showIssueDetails(getLayoutPosition()));
         }
 
         public TextView getTextView() {
@@ -60,6 +67,10 @@ public class PendingIssueAdapter extends RecyclerView.Adapter<PendingIssueAdapte
 
         public void updateFields(Issue data) {
             titleText.setText(data.getTitle());
+            descriptionText.setText(data.getDescription());
+            Glide.with(pendingIssueAdapter.target.get())
+                    .load(data.getImageAddress())
+                    .into(imageView);
         }
     }
 }

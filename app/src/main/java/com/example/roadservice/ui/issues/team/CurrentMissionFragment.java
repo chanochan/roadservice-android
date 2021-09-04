@@ -14,6 +14,8 @@ import com.example.roadservice.R;
 import com.example.roadservice.models.Mission;
 import com.example.roadservice.ui.issues.team.adapters.ConstItemsCounterAdapter;
 
+import java.util.ArrayList;
+
 public class CurrentMissionFragment extends Fragment {
     private Mission mission;
     private TextView missionTypeText;
@@ -46,12 +48,12 @@ public class CurrentMissionFragment extends Fragment {
         machinesRecycler = view.findViewById(R.id.missionMachinesRecycler);
         tempLayoutManager = new LinearLayoutManager(getActivity());
         machinesRecycler.setLayoutManager(tempLayoutManager);
-        machinesRecycler.setAdapter(new ConstItemsCounterAdapter(mission.getMachines(), "دستگاه"));
+        machinesRecycler.setAdapter(new ConstItemsCounterAdapter(new ArrayList<>(), "دستگاه"));
 
         skillsRecycler = view.findViewById(R.id.missionTeamsRecycler);
         tempLayoutManager = new LinearLayoutManager(getActivity());
         skillsRecycler.setLayoutManager(tempLayoutManager);
-        skillsRecycler.setAdapter(new ConstItemsCounterAdapter(mission.getSkills(), "تیم"));
+        skillsRecycler.setAdapter(new ConstItemsCounterAdapter(new ArrayList<>(), "تیم"));
 
         showData();
 

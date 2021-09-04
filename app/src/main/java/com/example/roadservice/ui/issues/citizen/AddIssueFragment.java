@@ -2,6 +2,7 @@ package com.example.roadservice.ui.issues.citizen;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,8 +37,14 @@ import com.example.roadservice.models.Province;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -58,12 +65,13 @@ public class AddIssueFragment extends Fragment {
                 Intent data = result.getData();
                 Log.d(TAG, "Read result");
                 if (result.getResultCode() == Activity.RESULT_OK)
-                    issue.setImageAddress(data.getDataString());
+                    issue.setImageAddress(Uri.parse(data.getDataString()).getPath());
                 else if (result.getResultCode() == ImagePicker.RESULT_ERROR)
                     issue.setImageAddress(null);
                 updateInterface();
             }
     );
+
     ActivityResultLauncher<Intent> locationPicker = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -121,9 +129,8 @@ public class AddIssueFragment extends Fragment {
                 ))
         );
         imageView.setOnClickListener(v -> ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(640, 480)
+                .crop(3f, 2f)
+                .compress(128)
                 .createIntent(intent -> {
                     imagePicker.launch(intent);
                     return null;
@@ -211,12 +218,28 @@ public class AddIssueFragment extends Fragment {
 
     private void submit() {
         if (!collectData()) return;
+
+        String encodedImage = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String uri = issue.getImageAddress();
+            Path path = Paths.get(uri);
+            try {
+                byte[] encoded = Base64.getEncoder().encode(Files.readAllBytes(path));
+                encodedImage = new String(encoded, StandardCharsets.US_ASCII);
+            } catch (IOException e) {
+                Log.e(TAG, "Failed to encode image");
+                e.printStackTrace();
+            }
+        } else
+            Log.w(TAG, "Need a higher version to send image");
+
         AddIssueRequest request = new AddIssueRequest(
                 issue.getTitle(),
                 issue.getDescription(),
                 issue.getCounty(),
                 issue.getLocation().getLatitude(),
-                issue.getLocation().getLongitude()
+                issue.getLocation().getLongitude(),
+                encodedImage
         );
         AddIssueThread thread = new AddIssueThread(handler, request);
         threadPoolExecutor.execute(thread);

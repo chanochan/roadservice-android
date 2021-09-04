@@ -1,5 +1,7 @@
 package com.example.roadservice.ui.issues.citizen;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -8,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.roadservice.R;
 import com.example.roadservice.models.County;
 import com.example.roadservice.models.Database;
@@ -46,6 +50,8 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
     private Issue issue;
     private MapView mapView;
     private MapboxMap mapboxMap;
+    private ImageView issueImageView;
+    private ImageView bigIssueImageView;
     private Layer droppedMarkerLayer;
 
     public CurrentIssueFragment() {
@@ -74,10 +80,31 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
         descriptionTextView = view.findViewById(R.id.myIssueDescText);
         provinceTextView = view.findViewById(R.id.provinceTextView);
         countyTextView = view.findViewById(R.id.countyTextView);
+        issueImageView = view.findViewById(R.id.issueImageView);
+        bigIssueImageView = view.findViewById(R.id.bigIssueImage);
 
         mapView = view.findViewById(R.id.myIssueMapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        issueImageView.setOnClickListener(v -> {
+            bigIssueImageView.animate().alpha(1.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                    bigIssueImageView.setVisibility(View.VISIBLE);
+                }
+            });
+        });
+        bigIssueImageView.setOnClickListener(v -> {
+            bigIssueImageView.animate().alpha(0.0f).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    bigIssueImageView.setVisibility(View.INVISIBLE);
+                }
+            });
+        });
 
         showData();
 
@@ -101,6 +128,11 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
 
             Province province = Database.getProvince(county.getProvinceId());
             provinceTextView.setText(province.getName());
+
+            if (issue.getImageAddress() != null) {
+                Glide.with(this).load(issue.getImageAddress()).into(issueImageView);
+                Glide.with(this).load(issue.getImageAddress()).into(bigIssueImageView);
+            }
         }
         if (mapboxMap != null) {
             CameraPosition position = new CameraPosition.Builder()
@@ -121,6 +153,7 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
     }
 
     private void initDroppedMarker(@NonNull Style loadedMapStyle) {
+        if (issue == null) return;
         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.blue_pin);
         assert drawable != null;
         Bitmap bitmap = Bitmap.createBitmap(

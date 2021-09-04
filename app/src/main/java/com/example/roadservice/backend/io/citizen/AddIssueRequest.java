@@ -26,13 +26,17 @@ public class AddIssueRequest {
     @Expose
     public String description;
 
-    // TODO image
+    @SerializedName("base64_image")
+    @Expose
+    public String encodedImage;
 
-    public AddIssueRequest(String title, String description, int countyId, double latitude, double longitude) {
+    public AddIssueRequest(String title, String description, int countyId, double latitude,
+                           double longitude, String encodedImage) {
         this.latitude = String.format(Locale.getDefault(), "%06f", latitude);
         this.longitude = String.format(Locale.getDefault(), "%06f", longitude);
         this.countyId = countyId;
         this.title = title;
         this.description = description;
+        this.encodedImage = "data:image/png;base64," + encodedImage;
     }
 }

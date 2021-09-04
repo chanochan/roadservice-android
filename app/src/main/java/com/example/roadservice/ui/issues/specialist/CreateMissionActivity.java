@@ -23,6 +23,7 @@ import com.example.roadservice.models.Skill;
 import com.example.roadservice.ui.RSAppCompatActivity;
 import com.example.roadservice.ui.issues.specialist.adapters.ItemsCounterAdapter;
 import com.example.roadservice.ui.issues.specialist.structs.ItemCounter;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         setupNavigationDrawer();
         setTitle("ایجاد ماموریت");
 
+        setupActionBar();
+
         machinesData = new ArrayList<>();
         for (Machine machine : Database.getMachines())
             machinesData.add(new ItemCounter(machine));
@@ -55,8 +58,8 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         for (Skill skill : Database.getSkills())
             skillsData.add(new ItemCounter(skill));
 
-        findViewById(R.id.addMissionBtn).setOnClickListener(v -> saveMission());
-        findViewById(R.id.discardMissionBtn).setOnClickListener(v -> discardMission());
+//        findViewById(R.id.addMissionBtn).setOnClickListener(v -> saveMission());
+//        findViewById(R.id.discardMissionBtn).setOnClickListener(v -> discardMission());
 
         typesSpinner = findViewById(R.id.missionTypeSpinner);
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
@@ -83,6 +86,19 @@ public class CreateMissionActivity extends RSAppCompatActivity {
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
         );
         handler = new CreateMissionHandler(Looper.getMainLooper(), this);
+    }
+
+    private void setupActionBar() {
+        MaterialToolbar toolBar = findViewById(R.id.topAppBar);
+        toolBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.acceptIssueHeader)
+                saveMission();
+            else if (item.getItemId() == R.id.rejectIssueHeader)
+                discardMission();
+            else
+                return false;
+            return true;
+        });
     }
 
     @Override
