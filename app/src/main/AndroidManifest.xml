@@ -17,24 +17,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoadServiceMobile"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.ExitActivity"></activity>
+
+        <receiver
+            android:name=".ExitActionReceiver"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".ui.issues.team.TeamDashboardActivity" />
-
         <activity android:name=".ui.issues.specialist.CreateMissionActivity" />
         <activity android:name=".ui.issues.specialist.SpecialistDashboardActivity" />
         <activity android:name=".ui.issues.specialist.IssueDetailsActivity" />
-
         <activity android:name=".ui.issues.citizen.SelectLocationActivity" />
         <activity android:name=".ui.issues.citizen.CitizenDashboardActivity" />
-
         <activity android:name=".ui.accounts.ChangePasswordActivity" />
         <activity android:name=".ui.accounts.RegisterActivity" />
         <activity android:name=".ui.accounts.ForgetPasswordActivity" />
         <activity android:name=".ui.accounts.LoginActivity" />
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

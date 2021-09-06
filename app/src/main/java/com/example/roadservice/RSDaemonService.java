@@ -1,4 +1,4 @@
-    package com.example.roadservice;
+package com.example.roadservice;
 
 import android.Manifest;
 import android.app.Notification;
@@ -41,9 +41,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class RSDaemonService extends Service {
-    private static final String TAG = "RSDaemonService";
-    private static final String NOTIFICATION_CHANNEL_ID = "RSDaemon";
     public static final String SP_KEY = "RSDaemon";
+    private static final String TAG = "RSDaemonService";
+    private static final String NOTIFICATION_CHANNEL_ID = "RSDaemon::Notification";
+    private static final String SERVICE_CHANNEL_ID = "RSDaemon::Service";
+    private static final String ACTION_EXIT = "EXIT";
     private Runnable senderThread;
     private boolean isRunning;
     private Handler handler;
@@ -58,12 +60,11 @@ public class RSDaemonService extends Service {
         NotificationChannel channel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 getString(R.string.APP_NAME),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
         );
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.createNotificationChannel(channel);
         showForegroundNotification(
-                manager,
                 "سامانه‌ی امداد جادّه‌ای",
                 "ساج با قدرت در حال اجراست."
         );
@@ -173,22 +174,49 @@ public class RSDaemonService extends Service {
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .build();
         manager.notify(2, notification);
     }
 
-    private void showForegroundNotification(NotificationManager manager, String title, String description) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void showForegroundNotification(String title, String description) {
+        NotificationChannel channel = new NotificationChannel(
+                SERVICE_CHANNEL_ID,
+                getString(R.string.APP_NAME) + "sss",
+                NotificationManager.IMPORTANCE_MIN
+        );
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.createNotificationChannel(channel);
+
         Intent nIntent = new Intent(getApplicationContext(), MainActivity.class);
+        nIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pIntent = PendingIntent.getActivity(
                 this, 0, nIntent, 0
         );
-        Notification notification = (new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID))
+
+        Intent exitIntent = new Intent(this, ExitActionReceiver.class);
+        exitIntent.setAction(ACTION_EXIT);
+        PendingIntent pendingExitIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                exitIntent,
+                0
+        );
+
+        Notification notification = (new NotificationCompat.Builder(this, SERVICE_CHANNEL_ID))
                 .setContentTitle(title)
                 .setContentText(description)
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentIntent(pIntent)
-                .setAutoCancel(true)
+                .addAction(
+                        R.drawable.ic_baseline_exit_to_app_24,
+                        getString(R.string.logout),
+                        pendingExitIntent
+                )
+                .setPriority(NotificationCompat.PRIORITY_MIN)
                 .build();
+        manager.notify(1, notification);
         startForeground(1, notification);
     }
 
