@@ -91,7 +91,7 @@ public class RSAppCompatActivity extends AppCompatActivity {
 
     public Class<?> getDashboardClass() {
         Profile profile = Database.getProfile();
-        if (profile == null)
+        if (profile == null || profile.getRole() == null)
             return MainActivity.class;
         switch (profile.getRole()) {
             case "CZ":

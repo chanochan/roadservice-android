@@ -32,8 +32,8 @@ public class AddIssueRequest {
 
     public AddIssueRequest(String title, String description, int countyId, double latitude,
                            double longitude, String encodedImage) {
-        this.latitude = String.format(Locale.getDefault(), "%06f", latitude);
-        this.longitude = String.format(Locale.getDefault(), "%06f", longitude);
+        this.latitude = String.format(Locale.ENGLISH, "%06f", latitude);
+        this.longitude = String.format(Locale.ENGLISH, "%06f", longitude);
         this.countyId = countyId;
         this.title = title;
         this.description = description;

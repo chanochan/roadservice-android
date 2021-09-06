@@ -42,6 +42,7 @@ public class CreateMissionActivity extends RSAppCompatActivity {
     private ThreadPoolExecutor threadPoolExecutor;
     private CreateMissionHandler handler;
     private Spinner typesSpinner;
+    private boolean hasPendingRequest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +60,6 @@ public class CreateMissionActivity extends RSAppCompatActivity {
         skillsData = new ArrayList<>();
         for (Skill skill : Database.getSkills())
             skillsData.add(new ItemCounter(skill));
-
-//        findViewById(R.id.addMissionBtn).setOnClickListener(v -> saveMission());
-//        findViewById(R.id.discardMissionBtn).setOnClickListener(v -> discardMission());
 
         typesSpinner = findViewById(R.id.missionTypeSpinner);
         ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(
@@ -107,23 +105,17 @@ public class CreateMissionActivity extends RSAppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(this, IssueDetailsActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void saveMission() {
+        if (hasPendingRequest) return;
         CreateMissionRequest req = new CreateMissionRequest();
         req.issueId = Database.getIssue().getId();
         req.missionTypeId = Database.getMissionTypes().get(typesSpinner.getSelectedItemPosition()).getId();
         req.machineReqs = new ArrayList<>();
         req.skillReqs = new ArrayList<>();
 
-        for (ItemCounter counter : machinesData) {
-            Machine machine = (Machine) counter.getObj();
-            if (counter.getCount() == 0) continue;
-            req.machineReqs.add(new CreateMissionRequest.MachineRequirement(
-                    machine.id,
-                    counter.getCount()
-            ));
-        }
         for (ItemCounter counter : skillsData) {
             Skill skill = (Skill) counter.getObj();
             if (counter.getCount() == 0) continue;
@@ -132,8 +124,24 @@ public class CreateMissionActivity extends RSAppCompatActivity {
                     counter.getCount()
             ));
         }
+        if (req.skillReqs.size() == 0) {
+            Toast.makeText(
+                    this,
+                    getString(R.string.error_skills_empty),
+                    Toast.LENGTH_SHORT
+            ).show();
+            return;
+        }
 
-        Log.d(TAG, "Starting thread");
+        hasPendingRequest = true;
+        for (ItemCounter counter : machinesData) {
+            Machine machine = (Machine) counter.getObj();
+            if (counter.getCount() == 0) continue;
+            req.machineReqs.add(new CreateMissionRequest.MachineRequirement(
+                    machine.id,
+                    counter.getCount()
+            ));
+        }
 
         CreateMissionThread thread = new CreateMissionThread(handler, req);
         threadPoolExecutor.execute(thread);
@@ -151,7 +159,12 @@ public class CreateMissionActivity extends RSAppCompatActivity {
 
     private void onFailed() {
         Log.d(TAG, "Error occurred in submission");
-        Toast.makeText(this, "مشکلی در ذخیره‌ی مشکل وجود دارد.", Toast.LENGTH_SHORT);
+        Toast.makeText(
+                this,
+                "مشکلی در ذخیره‌ی مشکل وجود دارد.",
+                Toast.LENGTH_SHORT
+        ).show();
+        hasPendingRequest = false;
     }
 
     private static class CreateMissionHandler extends Handler {
@@ -171,11 +184,7 @@ public class CreateMissionActivity extends RSAppCompatActivity {
             Log.d(TAG, "Received response");
             if (msg.arg1 == CreateMissionResponse.CODE) {
                 CreateMissionResponse resp = (CreateMissionResponse) msg.obj;
-                if (resp == null) {
-                    Log.d(TAG, "Empty response");
-                    return;
-                }
-                if (resp.status)
+                if (resp != null && resp.status)
                     target.onDone();
                 else
                     target.onFailed();

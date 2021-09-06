@@ -200,7 +200,7 @@ public class RSDaemonService extends Service {
         Notification notification = (new NotificationCompat.Builder(this, SERVICE_CHANNEL_ID))
                 .setContentTitle(title)
                 .setContentText(description)
-                .setSmallIcon(R.drawable.ic_baseline_notifications_24)
+                .setSmallIcon(R.drawable.ic_baseline_car_repair_24)
                 .setContentIntent(pIntent)
                 .addAction(
                         R.drawable.ic_baseline_exit_to_app_24,

@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Button;
 
 import com.example.roadservice.R;
 import com.example.roadservice.backend.io.accounts.ChangePasswordRequest;
@@ -24,6 +25,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
     private ThreadPoolExecutor executor;
     private ChangePasswordHandler handler;
     private TextInputLayout oldLayout, newLayout, repeatLayout;
+    private Button changePasswordButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,8 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
         setTitle("تغییر گذرواژه");
         navigationView.setCheckedItem(R.id.passwordNavigationItem);
 
-        findViewById(R.id.changePasswordButton).setOnClickListener(v -> submit());
+        changePasswordButton = findViewById(R.id.changePasswordButton);
+        changePasswordButton.setOnClickListener(v -> submit());
 
         oldLayout = findViewById(R.id.oldPasswordInput);
         newLayout = findViewById(R.id.newPasswordInput);
@@ -69,6 +72,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
         if (!isValid)
             return;
 
+        changePasswordButton.setEnabled(false);
         oldLayout.setErrorEnabled(false);
 
         ChangePasswordRequest req = new ChangePasswordRequest(newPassword);
@@ -96,6 +100,7 @@ public class ChangePasswordActivity extends RSAppCompatActivity {
 
     private void onFailure() {
         oldLayout.setError(getString(R.string.error_password_wrong));
+        changePasswordButton.setEnabled(true);
     }
 
     private static class ChangePasswordHandler extends Handler {

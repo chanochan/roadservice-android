@@ -15,7 +15,7 @@ public class UpdateLocationRequest {
     private final String longitude;
 
     public UpdateLocationRequest(double latitude, double longitude) {
-        this.latitude = String.format(Locale.getDefault(), "%06f", latitude);
-        this.longitude = String.format(Locale.getDefault(), "%06f", longitude);
+        this.latitude = String.format(Locale.ENGLISH, "%06f", latitude);
+        this.longitude = String.format(Locale.ENGLISH, "%06f", longitude);
     }
 }

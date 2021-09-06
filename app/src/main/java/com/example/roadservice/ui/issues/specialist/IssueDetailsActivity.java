@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.roadservice.R;
@@ -31,6 +28,7 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
     private Issue issue;
     private IssueDetailsHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
+    private boolean hasPendingRequest = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +45,6 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.issueDetailsFragment, fragment)
                 .commit();
-
-//        Button rejectButton = findViewById(R.id.rejectIssueBtn);
-//        rejectButton.setOnClickListener(v -> rejectIssue());
-//
-//        Button acceptButton = findViewById(R.id.acceptIssueBtn);
-//        acceptButton.setOnClickListener(v -> acceptIssue());
 
         threadPoolExecutor = new ThreadPoolExecutor(
                 0, 2, 15, TimeUnit.MINUTES, new LinkedBlockingQueue<>()
@@ -74,23 +66,35 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
     }
 
     private void rejectIssue() {
+        if (hasPendingRequest) return;
+        hasPendingRequest = true;
         RejectIssueThread thread = new RejectIssueThread(handler, new RejectIssueRequest(issue.getId()));
         threadPoolExecutor.execute(thread);
     }
 
     private void acceptIssue() {
+        if (hasPendingRequest) return;
         Intent intent = new Intent(this, CreateMissionActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        openDashboard();
     }
 
     private void onDone() {
         onBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        openDashboard();
+    private void onFailure() {
+        Toast.makeText(
+                this,
+                getString(R.string.submission_failure),
+                Toast.LENGTH_SHORT
+        ).show();
+        hasPendingRequest = false;
     }
 
     private static class IssueDetailsHandler extends Handler {
@@ -109,11 +113,10 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
                 return;
             if (msg.arg1 == RejectIssueResponse.CODE) {
                 RejectIssueResponse resp = (RejectIssueResponse) msg.obj;
-                if (resp == null) {
-                    Log.d(TAG, "Empty response");
-                    return;
-                }
-                target.onDone();
+                if (resp != null && resp.status)
+                    target.onDone();
+                else
+                    target.onFailure();
             }
         }
     }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.roadservice.R;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends RSAppCompatActivity {
     private static final String TAG = "LoginActivity";
+    private Button loginButton;
     private ThreadPoolExecutor threadPoolExecutor;
     private LoginHandler handler;
 
@@ -36,7 +38,8 @@ public class LoginActivity extends RSAppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle("ورود");
 
-        findViewById(R.id.loginBtn).setOnClickListener(v -> login());
+        loginButton = findViewById(R.id.loginBtn);
+        loginButton.setOnClickListener(v -> login());
         findViewById(R.id.gotoRegisterBtn).setOnClickListener(v -> startRegister());
         findViewById(R.id.forgotPasswordQuestion).setOnClickListener(v -> gotoForgetPassword());
 
@@ -79,8 +82,8 @@ public class LoginActivity extends RSAppCompatActivity {
     private String getPhoneError(String phoneNumber) {
         if (phoneNumber.length() == 0)
             return getString(R.string.error_required);
-        if (phoneNumber.length() != 11 || !phoneNumber.startsWith("09"))
-            return getString(R.string.login_error_phone_length);
+//        if (phoneNumber.length() != 11 || !phoneNumber.startsWith("09"))
+//            return getString(R.string.login_error_phone_length);
         return null;
     }
 
@@ -93,6 +96,7 @@ public class LoginActivity extends RSAppCompatActivity {
     private void login() {
         LoginData data = collectData();
         if (data == null) return;
+        loginButton.setEnabled(false);
         LoginRequest reqData = new LoginRequest(data.phoneNumber, data.password);
         LoginThread thread = new LoginThread(handler, reqData);
         threadPoolExecutor.execute(thread);
@@ -110,6 +114,7 @@ public class LoginActivity extends RSAppCompatActivity {
 
     private void onFailed() {
         Toast.makeText(this, getString(R.string.login_failed), Toast.LENGTH_LONG).show();
+        loginButton.setEnabled(true);
     }
 
     private static class LoginHandler extends Handler {

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -94,6 +95,7 @@ public class AddIssueFragment extends Fragment {
     private ArrayAdapter<String> provinceAdapter, countyAdapter;
     private AddIssueHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
+    private Button addIssueButton;
 
     public AddIssueFragment() {
         // Required empty public constructor
@@ -137,7 +139,7 @@ public class AddIssueFragment extends Fragment {
                 })
         );
 
-        Button addIssueButton = view.findViewById(R.id.addIssueBtn);
+        addIssueButton = view.findViewById(R.id.addIssueBtn);
         addIssueButton.setOnClickListener(v -> submit());
 
         provinceSpinner = view.findViewById(R.id.provinceSpinner);
@@ -167,7 +169,9 @@ public class AddIssueFragment extends Fragment {
         countySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                issue.setCounty(counties.get(position).getId());
+                int countyId = counties.get(position).getId();
+                Log.d(TAG, "Set county to " + countyId);
+                issue.setCounty(countyId);
             }
 
             @Override
@@ -191,7 +195,12 @@ public class AddIssueFragment extends Fragment {
         counties = Database.getProvinceCounties(id);
         for (County county : counties)
             countyAdapter.add(county.getName());
-        countySpinner.setSelection(0);
+        if (countyAdapter.getCount() > 0) {
+            countySpinner.setSelection(0);
+            int countyId = counties.get(0).getId();
+            Log.d(TAG, "Set county to " + countyId);
+            issue.setCounty(countyId);
+        }
     }
 
     private boolean collectData() {
@@ -210,6 +219,19 @@ public class AddIssueFragment extends Fragment {
             isValid = false;
         } else
             titleLayout.setErrorEnabled(false);
+        if (issue.getTitle().length() == 0) {
+            descriptionLayout.setError(getString(R.string.error_description_empty));
+            isValid = false;
+        } else
+            descriptionLayout.setErrorEnabled(false);
+        if (issue.getImageAddress() == null) {
+            Toast.makeText(
+                    getContext(),
+                    getString(R.string.error_image_empty),
+                    Toast.LENGTH_SHORT
+            ).show();
+            isValid = false;
+        }
 
         if (isValid)
             return true;
@@ -232,6 +254,8 @@ public class AddIssueFragment extends Fragment {
             }
         } else
             Log.w(TAG, "Need a higher version to send image");
+
+        addIssueButton.setEnabled(false);
 
         AddIssueRequest request = new AddIssueRequest(
                 issue.getTitle(),
@@ -264,6 +288,15 @@ public class AddIssueFragment extends Fragment {
         startActivity(new Intent(activity, CitizenDashboardActivity.class));
     }
 
+    private void onFailure() {
+        addIssueButton.setEnabled(true);
+        Toast.makeText(
+                getContext(),
+                getString(R.string.submission_failure),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
     private static class AddIssueHandler extends Handler {
         private final WeakReference<AddIssueFragment> target;
 
@@ -282,6 +315,8 @@ public class AddIssueFragment extends Fragment {
             AddIssueResponse resp = (AddIssueResponse) msg.obj;
             if (resp != null && resp.status)
                 target.onDone();
+            else
+                target.onFailure();
         }
     }
 }

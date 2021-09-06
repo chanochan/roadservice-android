@@ -94,4 +94,9 @@
     <string name="county">شهرستان</string>
     <string name="iran">ایران</string>
     <string name="error_phone_duplicate">این تلفن همراه در سامانه ثبت شده است.</string>
+    <string name="error_description_empty">در مورد مشکل توضیح دهید.</string>
+    <string name="error_image_empty">تصویری برای مشکل انتخاب کنید.</string>
+    <string name="error_report_empty">لطفا گزارش ماموریت را بنویسید.</string>
+    <string name="submission_failure">مشکلی در ارسال اطّلاعات وجود دارد.</string>
+    <string name="error_skills_empty">باید حداقل یک مهارت انتخاب کنید.</string>
 </resources>

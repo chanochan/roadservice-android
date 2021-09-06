@@ -26,13 +26,14 @@ public class RegisterActivity extends RSAppCompatActivity {
     private static final String TAG = "RegisterActivity";
     private ThreadPoolExecutor threadPoolExecutor;
     private Handler handler;
+    private Button registerBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        Button registerBtn = findViewById(R.id.registerBtn);
+        registerBtn = findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(v -> register());
 
         Button loginBtn = findViewById(R.id.gotoLoginBtn);
@@ -63,6 +64,7 @@ public class RegisterActivity extends RSAppCompatActivity {
 
     private void onFailure() {
         setError(findViewById(R.id.phoneNumberText), getString(R.string.error_phone_duplicate));
+        registerBtn.setEnabled(true);
     }
 
     private void register() {

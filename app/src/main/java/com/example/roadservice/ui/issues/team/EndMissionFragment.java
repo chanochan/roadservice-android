@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class EndMissionFragment extends Fragment {
     private EndMissionHandler handler;
     private ThreadPoolExecutor threadPoolExecutor;
+    private Button endMissionButton;
 
     public EndMissionFragment() {
         // Required empty public constructor
@@ -51,7 +52,7 @@ public class EndMissionFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_end_mission, container, false);
 
-        Button endMissionButton = view.findViewById(R.id.endMissionBtn);
+        endMissionButton = view.findViewById(R.id.endMissionBtn);
         endMissionButton.setOnClickListener(v -> submit());
 
         return view;
@@ -61,6 +62,15 @@ public class EndMissionFragment extends Fragment {
         ((RSAppCompatActivity) getActivity()).hideKeyboard();
         TextInputLayout input = this.getView().findViewById(R.id.reportTextLayout);
         String report = input.getEditText().getText().toString();
+
+        if (report.length() == 0) {
+            input.setError(getString(R.string.error_report_empty));
+            return;
+        } else
+            input.setErrorEnabled(false);
+
+        endMissionButton.setEnabled(false);
+
         EndMissionRequest req = new EndMissionRequest(report);
         EndMissionThread thread = new EndMissionThread(handler, req);
         threadPoolExecutor.execute(thread);
@@ -68,6 +78,15 @@ public class EndMissionFragment extends Fragment {
 
     private void onDone() {
         ((TeamDashboardActivity) getActivity()).updateData();
+    }
+
+    private void onFailure() {
+        endMissionButton.setEnabled(true);
+        Toast.makeText(
+                getContext(),
+                getString(R.string.submission_failure),
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     private static class EndMissionHandler extends Handler {
@@ -86,12 +105,10 @@ public class EndMissionFragment extends Fragment {
                 return;
             if (msg.arg1 == EndMissionResponse.CODE) {
                 EndMissionResponse resp = (EndMissionResponse) msg.obj;
-                if (resp == null) {
-                    Log.d(TAG, "Empty response");
-                    return;
-                }
-//                if (resp.status)
-                target.onDone();
+                if (resp != null && resp.status)
+                    target.onDone();
+                else
+                    target.onFailure();
             }
         }
     }
