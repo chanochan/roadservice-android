@@ -63,7 +63,7 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
         setTitle("ثبت مشکل جدید");
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .add(R.id.citizen_fragment, AddIssueFragment.class, null)
+                .replace(R.id.citizen_fragment, AddIssueFragment.class, null)
                 .commit();
     }
 

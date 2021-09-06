@@ -60,7 +60,6 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("انتخاب مکان");
 
 // Mapbox access token is configured here. This needs to be called either in your application
 // object or in the same activity which contains the mapview.
@@ -68,6 +67,7 @@ public class SelectLocationActivity extends RSAppCompatActivity implements Permi
 
 // This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_select_location);
+        setTitle("انتخاب مکان");
 
 // Initialize the mapboxMap view
         mapView = findViewById(R.id.mapView);

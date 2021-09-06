@@ -32,7 +32,6 @@
         <activity android:name=".ui.issues.citizen.CitizenDashboardActivity" />
         <activity android:name=".ui.accounts.ChangePasswordActivity" />
         <activity android:name=".ui.accounts.RegisterActivity" />
-        <activity android:name=".ui.accounts.ForgetPasswordActivity" />
         <activity android:name=".ui.accounts.LoginActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>

@@ -1,6 +1,7 @@
 package com.example.roadservice.ui.accounts;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.roadservice.R;
+import com.example.roadservice.backend.RetrofitInstance;
 import com.example.roadservice.backend.io.accounts.LoginRequest;
 import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.threads.accounts.LoginThread;
@@ -59,8 +61,7 @@ public class LoginActivity extends RSAppCompatActivity {
         if (phoneError != null) {
             tmp.setError(phoneError);
             return null;
-        }
-        else
+        } else
             tmp.setErrorEnabled(false);
 
         tmp = findViewById(R.id.loginPasswordText);
@@ -69,8 +70,7 @@ public class LoginActivity extends RSAppCompatActivity {
         if (passwordError != null) {
             tmp.setError(passwordError);
             return null;
-        }
-        else
+        } else
             tmp.setErrorEnabled(false);
 
         return data;
@@ -99,7 +99,7 @@ public class LoginActivity extends RSAppCompatActivity {
     }
 
     private void gotoForgetPassword() {
-        Intent intent = new Intent(this, ForgetPasswordActivity.class);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(RetrofitInstance.BASE_URL + "password/forgot/"));
         startActivity(intent);
     }
 
