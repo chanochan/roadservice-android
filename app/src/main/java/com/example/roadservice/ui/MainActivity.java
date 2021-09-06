@@ -160,6 +160,7 @@ public class MainActivity extends RSAppCompatActivity {
                 ));
                 if (target.getDashboardClass() == MainActivity.class) {
                     Database.setProfile(null);
+                    Database.setToken(null);
                 }
                 target.openDashboard();
             } else if (msg.obj == null)
