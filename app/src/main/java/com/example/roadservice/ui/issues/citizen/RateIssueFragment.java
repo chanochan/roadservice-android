@@ -107,7 +107,6 @@ public class RateIssueFragment extends Fragment {
             Log.d(TAG, "Response status: " + resp.status);
             if (resp.status)
                 target.onDone();
-            // TODO handle errors
         }
     }
 }

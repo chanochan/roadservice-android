@@ -3,6 +3,8 @@ package com.example.roadservice.models;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import com.example.roadservice.R;
 import com.example.roadservice.RoadServiceApplication;
 
@@ -119,9 +121,12 @@ public class Database {
         return profile;
     }
 
-    public static void setProfile(Profile profile) {
+    public static void setProfile(@Nullable Profile profile) {
         Database.profile = profile;
-        Database.setRole(profile.getRole());
+        if (profile != null)
+            Database.setRole(profile.getRole());
+        else
+            Database.setRole(null);
     }
 
     public static void setToken(String token) {

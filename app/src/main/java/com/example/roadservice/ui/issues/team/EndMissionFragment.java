@@ -71,6 +71,7 @@ public class EndMissionFragment extends Fragment {
     }
 
     private static class EndMissionHandler extends Handler {
+        private static final String TAG = "EndMissionHandler";
         private final WeakReference<EndMissionFragment> target;
 
         EndMissionHandler(Looper looper, EndMissionFragment target) {
@@ -86,7 +87,7 @@ public class EndMissionFragment extends Fragment {
             if (msg.arg1 == EndMissionResponse.CODE) {
                 EndMissionResponse resp = (EndMissionResponse) msg.obj;
                 if (resp == null) {
-                    Log.d("SHIT", "Empty response");
+                    Log.d(TAG, "Empty response");
                     return;
                 }
 //                if (resp.status)

@@ -22,7 +22,6 @@ public class CurrentIssueThread extends BaseBackendThread {
             CurrentIssueResponse resp = new RoadServiceApi().currentIssue((CurrentIssueRequest) request);
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

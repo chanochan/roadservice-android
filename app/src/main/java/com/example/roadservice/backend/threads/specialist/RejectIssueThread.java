@@ -9,6 +9,8 @@ import com.example.roadservice.backend.io.specialist.RejectIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
 public class RejectIssueThread extends BaseBackendThread {
+    private static final String TAG = "RejectIssueThread";
+
     public RejectIssueThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -18,11 +20,10 @@ public class RejectIssueThread extends BaseBackendThread {
         try {
             RejectIssueResponse resp = new RoadServiceApi().rejectIssue((RejectIssueRequest) request);
             if (resp == null) {
-                Log.d("SHIT", "Empty response in reject issue thread!!");
+                Log.d(TAG, "Empty response in reject issue thread!!");
             }
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

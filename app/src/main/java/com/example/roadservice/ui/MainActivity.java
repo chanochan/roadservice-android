@@ -1,7 +1,6 @@
 package com.example.roadservice.ui;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -149,7 +148,6 @@ public class MainActivity extends RSAppCompatActivity {
                 return;
             target.addPendingRequests(-1);
             if (msg.arg1 == ProfileResponse.CODE) {
-                // TODO handle moderators login
                 ProfileResponse resp = (ProfileResponse) msg.obj;
                 if (resp == null) {
                     target.showButtons();
@@ -160,6 +158,9 @@ public class MainActivity extends RSAppCompatActivity {
                         resp.role,
                         resp.phoneNumber
                 ));
+                if (target.getDashboardClass() == MainActivity.class) {
+                    Database.setProfile(null);
+                }
                 target.openDashboard();
             } else if (msg.obj == null)
                 target.networkError();

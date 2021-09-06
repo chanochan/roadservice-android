@@ -129,15 +129,14 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
             if (target == null)
                 return;
             if (msg.arg1 == CurrentMissionResponse.CODE) {
-                // TODO handle errors
                 CurrentMissionResponse resp = (CurrentMissionResponse) msg.obj;
                 if (resp == null) {
-                    Log.d("SHIT", "Empty response");
+                    Log.d(TAG, "Empty response");
                     target.setData(null, null);
                     return;
                 }
-                Log.d("SHIT", "Full response");
-                Log.d("SHIT", "Full response");
+                Log.d(TAG, "Full response");
+                Log.d(TAG, "Full response");
                 if (resp.status)
                     target.setData(resp.getIssue(), resp.getMission());
                 else

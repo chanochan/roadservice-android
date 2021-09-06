@@ -127,7 +127,6 @@ public class LoginActivity extends RSAppCompatActivity {
             if (target == null)
                 return;
             if (msg.arg1 == LoginResponse.CODE) {
-                // TODO handle login errors
                 LoginResponse resp = (LoginResponse) msg.obj;
                 if (resp == null) {
                     Log.d(TAG, "Null response");

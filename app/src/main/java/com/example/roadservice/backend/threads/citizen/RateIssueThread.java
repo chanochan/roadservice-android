@@ -26,7 +26,6 @@ public class RateIssueThread extends BaseBackendThread {
             }
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

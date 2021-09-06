@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MissionTypesThread extends BaseBackendThread {
+    private static final String TAG = "MissionTypesThread";
+
     public MissionTypesThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -22,7 +24,7 @@ public class MissionTypesThread extends BaseBackendThread {
         try {
             List<MissionTypeResponse> resp = new RoadServiceApi().missionTypes();
             if (resp == null) {
-                Log.d("SHIT", "Empty response in mission types thread");
+                Log.d(TAG, "Empty response in mission types thread");
                 return null;
             }
             List<MissionType> missionTypes = new ArrayList<>();
@@ -31,7 +33,6 @@ public class MissionTypesThread extends BaseBackendThread {
             Database.setMissionTypes(missionTypes);
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

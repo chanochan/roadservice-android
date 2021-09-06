@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PendingIssuesListThread extends BaseBackendThread {
+    private static final String TAG = "PendingIssuesListThread";
+
     public PendingIssuesListThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -21,12 +23,11 @@ public class PendingIssuesListThread extends BaseBackendThread {
         try {
             List<PendingIssueResponse> resp = new RoadServiceApi().pendingIssuesList();
             if (resp == null)
-                Log.d("SHIT", "Empty response in here!!");
+                Log.d(TAG, "Empty response in here!!");
             else
                 return resp;
             System.out.println(Database.getToken(""));
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
         }
         return new ArrayList<>();

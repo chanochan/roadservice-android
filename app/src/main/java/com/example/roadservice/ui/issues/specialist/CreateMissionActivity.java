@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class CreateMissionActivity extends RSAppCompatActivity {
+    private static final String TAG = "CreateMissionActivity";
     private List<ItemCounter> machinesData;
     private List<ItemCounter> skillsData;
     private RecyclerView machinesRecycler;
@@ -131,7 +133,7 @@ public class CreateMissionActivity extends RSAppCompatActivity {
             ));
         }
 
-        Log.d("CreateMissionActivity", "Starting thread");
+        Log.d(TAG, "Starting thread");
 
         CreateMissionThread thread = new CreateMissionThread(handler, req);
         threadPoolExecutor.execute(thread);
@@ -148,10 +150,12 @@ public class CreateMissionActivity extends RSAppCompatActivity {
     }
 
     private void onFailed() {
-        Log.d("CreateMissionResponse", "Error occurred in submission");
+        Log.d(TAG, "Error occurred in submission");
+        Toast.makeText(this, "مشکلی در ذخیره‌ی مشکل وجود دارد.", Toast.LENGTH_SHORT);
     }
 
     private static class CreateMissionHandler extends Handler {
+        private static final String TAG = "CreateMissionHandler";
         private final WeakReference<CreateMissionActivity> target;
 
         CreateMissionHandler(Looper looper, CreateMissionActivity target) {
@@ -164,12 +168,11 @@ public class CreateMissionActivity extends RSAppCompatActivity {
             CreateMissionActivity target = this.target.get();
             if (target == null)
                 return;
-            Log.d("CreateMissionActivity", "Received response");
+            Log.d(TAG, "Received response");
             if (msg.arg1 == CreateMissionResponse.CODE) {
-                // TODO handle errors
                 CreateMissionResponse resp = (CreateMissionResponse) msg.obj;
                 if (resp == null) {
-                    Log.d("SHIT", "Empty response");
+                    Log.d(TAG, "Empty response");
                     return;
                 }
                 if (resp.status)

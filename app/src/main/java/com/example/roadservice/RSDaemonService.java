@@ -10,12 +10,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -36,7 +32,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -48,13 +43,11 @@ public class RSDaemonService extends Service {
     private static final String ACTION_EXIT = "EXIT";
     private Runnable senderThread;
     private boolean isRunning;
-    private Handler handler;
     private RoadServiceApi api;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
-        handler = new ShowToastHandler(getMainLooper(), this);
         isRunning = false;
         api = new RoadServiceApi();
         NotificationChannel channel = new NotificationChannel(
@@ -65,8 +58,8 @@ public class RSDaemonService extends Service {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         manager.createNotificationChannel(channel);
         showForegroundNotification(
-                "سامانه‌ی امداد جادّه‌ای",
-                "ساج با قدرت در حال اجراست."
+                "ساج",
+                "ساج در حال اجراست."
         );
         senderThread = () -> {
             int x = 0;
@@ -242,7 +235,6 @@ public class RSDaemonService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (isRunning)
             return START_STICKY;
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
         new Thread(senderThread).start();
         isRunning = true;
         return START_STICKY;
@@ -257,21 +249,5 @@ public class RSDaemonService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "Destroying...");
-    }
-
-    private static class ShowToastHandler extends Handler {
-        private final WeakReference<RSDaemonService> target;
-
-        ShowToastHandler(Looper looper, RSDaemonService target) {
-            super(looper);
-            this.target = new WeakReference<>(target);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            RSDaemonService target = this.target.get();
-            String text = (String) msg.obj;
-            Toast.makeText(target, text, Toast.LENGTH_SHORT).show();
-        }
     }
 }

@@ -94,6 +94,7 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
     }
 
     private static class IssueDetailsHandler extends Handler {
+        private static final String TAG = "IssueDetailsHandler";
         private final WeakReference<IssueDetailsActivity> target;
 
         IssueDetailsHandler(Looper looper, IssueDetailsActivity target) {
@@ -109,7 +110,7 @@ public class IssueDetailsActivity extends RSAppCompatActivity {
             if (msg.arg1 == RejectIssueResponse.CODE) {
                 RejectIssueResponse resp = (RejectIssueResponse) msg.obj;
                 if (resp == null) {
-                    Log.d("SHIT", "Empty response");
+                    Log.d(TAG, "Empty response");
                     return;
                 }
                 target.onDone();

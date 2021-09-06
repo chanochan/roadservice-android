@@ -17,7 +17,6 @@ public class RegisterThread extends BaseBackendThread {
         try {
             return new RoadServiceApi().register((RegisterRequest) request);
         } catch (Exception e) {
-            // TODO handle exception
             return null;
         }
     }

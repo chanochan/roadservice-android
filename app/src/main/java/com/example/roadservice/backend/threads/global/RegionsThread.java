@@ -14,6 +14,8 @@ import com.example.roadservice.models.Province;
 import java.util.ArrayList;
 
 public class RegionsThread extends BaseBackendThread {
+    private static final String TAG = "RegionsThread";
+
     public RegionsThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -23,7 +25,7 @@ public class RegionsThread extends BaseBackendThread {
         try {
             RegionsResponse resp = new RoadServiceApi().regions();
             if (resp == null) {
-                Log.d("SHIT", "Empty response in regions thread");
+                Log.d(TAG, "Empty response in regions thread");
                 return resp;
             }
             ArrayList<Province> provinces = new ArrayList<>();
@@ -32,19 +34,18 @@ public class RegionsThread extends BaseBackendThread {
                     resp.provinces) {
                 Province provinceModel = new Province(province.pk, province.name);
                 provinces.add(provinceModel);
-                Log.d("REGIONS", province.name);
+                Log.d(TAG, province.name);
                 for (RegionsResponse.Province.County county :
                         province.counties) {
                     County countyModel = new County(county.pk, county.provinceId, county.name);
                     counties.add(countyModel);
-                    Log.d("REGIONS", county.name);
+                    Log.d(TAG, county.name);
                 }
             }
             Database.setProvinces(provinces);
             Database.setCounties(counties);
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

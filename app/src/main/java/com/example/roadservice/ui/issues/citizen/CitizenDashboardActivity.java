@@ -96,6 +96,7 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
     }
 
     private static class CitizenDashboardHandler extends Handler {
+        private static final String TAG = "CitizenDashboardHandler";
         private final WeakReference<CitizenDashboardActivity> target;
 
         CitizenDashboardHandler(Looper looper, CitizenDashboardActivity target) {
@@ -114,7 +115,7 @@ public class CitizenDashboardActivity extends RSAppCompatActivity {
                 if (resp == null)
                     return;
                 Issue issue = resp.toIssue();
-                Log.d("SHIT", resp.state);
+                Log.d(TAG, resp.state);
                 if (resp.state.equals("SC") || resp.state.equals("RJ") || resp.state.equals("FL"))
                     target.gotoAddIssue();
                 else if (resp.state.equals("DO"))

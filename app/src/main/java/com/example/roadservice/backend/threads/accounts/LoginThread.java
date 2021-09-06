@@ -9,6 +9,8 @@ import com.example.roadservice.backend.io.accounts.LoginResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
 public class LoginThread extends BaseBackendThread {
+    private static final String TAG = "LoginThread";
+
     public LoginThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -18,11 +20,10 @@ public class LoginThread extends BaseBackendThread {
         try {
             LoginResponse resp = new RoadServiceApi().login((LoginRequest) request);
             if (resp == null) {
-                Log.d("SHIT", "Empty response in here!!");
+                Log.d(TAG, "Empty response in here!!");
             }
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

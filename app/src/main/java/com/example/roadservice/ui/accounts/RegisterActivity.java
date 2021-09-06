@@ -23,6 +23,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class RegisterActivity extends RSAppCompatActivity {
+    private static final String TAG = "RegisterActivity";
     private ThreadPoolExecutor threadPoolExecutor;
     private Handler handler;
 
@@ -75,7 +76,7 @@ public class RegisterActivity extends RSAppCompatActivity {
         );
         RegisterThread thread = new RegisterThread(handler, reqData);
         threadPoolExecutor.execute(thread);
-        Log.d("SHIT", "Registering");
+        Log.d(TAG, "Registering");
     }
 
     private RegisterData collectData() {
@@ -159,9 +160,9 @@ public class RegisterActivity extends RSAppCompatActivity {
             RegisterActivity target = this.target.get();
             if (target == null)
                 return;
-            Log.d("SHIT", "Received msg");
+            Log.d(TAG, "Received msg");
             if (msg.arg1 == RegisterResponse.CODE) {
-                Log.d("SHIT", "Received msg");
+                Log.d(TAG, "Received msg");
                 RegisterResponse resp = (RegisterResponse) msg.obj;
                 if (resp.status)
                     target.onSuccess();

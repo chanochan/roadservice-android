@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillsThread extends BaseBackendThread {
+    private static final String TAG = "SkillsThread";
+
     public SkillsThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -22,17 +24,16 @@ public class SkillsThread extends BaseBackendThread {
         try {
             List<SkillResponse> resp = new RoadServiceApi().skills();
             if (resp == null) {
-                Log.d("SHIT", "Empty response in skills thread");
+                Log.d(TAG, "Empty response in skills thread");
                 return null;
             }
             List<Skill> skills = new ArrayList<>();
             for (SkillResponse respItem : resp)
                 skills.add(respItem.toSkill());
             Database.setSkills(skills);
-            Log.d("SKILLS", skills.toString());
+            Log.d(TAG, skills.toString());
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

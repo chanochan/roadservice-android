@@ -3,7 +3,7 @@
         pk.eyJ1IjoiaGF3YXdvYjQyNCIsImEiOiJja3N4N2FqNmkwMDl5MnZwOTY0end1czd0In0.zzBK2qxj_-ecFMccpgHqgw
     </string>
     <string name="preference_file_key">com.example.roadservice.ROAD_SERVICE</string>
-    <string name="app_name">Road Service Mobile</string>
+    <string name="app_name">ساج</string>
     <string name="phone_number">تلفن همراه</string>
     <string name="password">رمز عبور</string>
     <string name="login">ورود</string>

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MachinesThread extends BaseBackendThread {
+    private static final String TAG = "MachinesThread";
+
     public MachinesThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -22,17 +24,16 @@ public class MachinesThread extends BaseBackendThread {
         try {
             List<MachineResponse> resp = new RoadServiceApi().machines();
             if (resp == null) {
-                Log.d("SHIT", "Empty response in machines thread");
+                Log.d(TAG, "Empty response in machines thread");
                 return resp;
             }
             List<Machine> machines = new ArrayList<>();
             for (MachineResponse respItem : resp)
                 machines.add(respItem.toMachine());
             Database.setMachines(machines);
-            Log.d("MACHINES", machines.toString());
+            Log.d(TAG, machines.toString());
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

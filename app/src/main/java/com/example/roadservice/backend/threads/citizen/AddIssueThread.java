@@ -9,6 +9,8 @@ import com.example.roadservice.backend.io.citizen.AddIssueResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
 public class AddIssueThread extends BaseBackendThread {
+    private static final String TAG = "AddIssueThread";
+
     public AddIssueThread(Handler handler, AddIssueRequest request) {
         super(handler, request);
     }
@@ -18,11 +20,10 @@ public class AddIssueThread extends BaseBackendThread {
         try {
             AddIssueResponse resp = new RoadServiceApi().addIssue((AddIssueRequest) request);
             if (resp == null) {
-                Log.d("SHIT", "Empty response in add issue thread!!");
+                Log.d(TAG, "Empty response in add issue thread!!");
             }
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }

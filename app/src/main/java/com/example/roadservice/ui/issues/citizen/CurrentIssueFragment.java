@@ -75,7 +75,7 @@ public class CurrentIssueFragment extends Fragment implements OnMapReadyCallback
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_current_issue, container, false);
 
-        Log.d("SHIT", "Running on create view");
+        Log.d(TAG, "Running on create view");
         titleTextView = view.findViewById(R.id.myIssueTitleText);
         descriptionTextView = view.findViewById(R.id.myIssueDescText);
         provinceTextView = view.findViewById(R.id.provinceTextView);

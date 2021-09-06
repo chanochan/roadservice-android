@@ -9,6 +9,8 @@ import com.example.roadservice.backend.io.team.EndMissionResponse;
 import com.example.roadservice.backend.threads.BaseBackendThread;
 
 public class EndMissionThread extends BaseBackendThread {
+    private static final String TAG = "EndMissionThread";
+
     public EndMissionThread(Handler handler, Object request) {
         super(handler, request);
     }
@@ -18,10 +20,9 @@ public class EndMissionThread extends BaseBackendThread {
         try {
             EndMissionResponse resp = new RoadServiceApi().endMission((EndMissionRequest) request);
             if (resp == null)
-                Log.d("SHIT", "In ja nulle tu end mission!!");
+                Log.d(TAG, "In ja nulle tu end mission!!");
             return resp;
         } catch (Exception e) {
-            // TODO handle exception
             e.printStackTrace();
             return null;
         }
