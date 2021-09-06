@@ -215,8 +215,10 @@ public class RSDaemonService extends Service {
 
     private GeoLocation getLastLocation() {
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "Need permission");
             return null;
+        }
         Task<Location> task = fusedLocationClient.getLastLocation();
         try {
             Tasks.await(task);

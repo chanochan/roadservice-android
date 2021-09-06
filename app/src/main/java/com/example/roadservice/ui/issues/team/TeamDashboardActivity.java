@@ -136,7 +136,6 @@ public class TeamDashboardActivity extends RSAppCompatActivity {
                     return;
                 }
                 Log.d(TAG, "Full response");
-                Log.d(TAG, "Full response");
                 if (resp.status)
                     target.setData(resp.getIssue(), resp.getMission());
                 else

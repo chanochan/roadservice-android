@@ -3,33 +3,19 @@ package com.example.roadservice.backend.io.team;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
+
 public class UpdateLocationRequest {
     @SerializedName("lat")
     @Expose
-    private double latitude;
+    private final String latitude;
 
     @SerializedName("long")
     @Expose
-    private double longitude;
+    private final String longitude;
 
     public UpdateLocationRequest(double latitude, double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+        this.latitude = String.format(Locale.getDefault(), "%06f", latitude);
+        this.longitude = String.format(Locale.getDefault(), "%06f", longitude);
     }
 }
